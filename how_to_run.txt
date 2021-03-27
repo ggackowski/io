@@ -1,0 +1,1 @@
+pip3 install libs/twint -r libs/twint/requirements.txt
