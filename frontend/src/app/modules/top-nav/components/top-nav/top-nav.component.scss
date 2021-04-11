@@ -1,0 +1,54 @@
+@import 'src/colors';
+
+.topNav {
+  &_wrapper {
+    padding: 10px 0;
+    background-color: $grayWhite;
+    color: $mainColor;
+  ;
+  }
+
+  &_home {
+    display: flex;
+    align-items: center;
+
+    p {
+      font-size: 24px;
+      margin-bottom: 0;
+      margin-left: 24px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+    }
+  }
+
+  &_menu {
+    height: 38px;
+    list-style: none;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+
+    &_item {
+      margin-bottom: 0;
+      padding:  5px 16px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &_selected {
+      border: 1px solid $secondaryColor;
+      color: $secondaryColor;
+      border-radius: 10px;
+
+      &:hover {
+        color: $grayWhite;
+        background-color: $secondaryColor;
+      }
+    }
+  }
+}

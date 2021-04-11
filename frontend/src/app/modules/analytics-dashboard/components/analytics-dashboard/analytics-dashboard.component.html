@@ -1,2 +1,39 @@
-<p>analytics-dashboard works!</p>
-<h1>There will be something soon</h1>
+<div class="row m-md-4 Ad_background">
+  <div class="col mb-md-5">
+    <div class="row">
+      <div class="col">
+        <h1 class="Ad_titleBanner">Analytics Dashboard</h1>
+        <button class="Ad_mainSettings" mat-stroked-button>Options</button>
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+    <div class="row Ad_grid">
+      <div class="AdChart_wrapper">
+          <p class="AdChart_chartTitle">Tweets count</p>
+          <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
+          <div class="AdChart_stats">
+            <app-simple-bar-chart
+              [dataSets]="dataSets"
+              [labels]="labels"
+            ></app-simple-bar-chart>
+          </div>
+      </div>
+
+      <div class="AdChart_wrapper">
+        <p class="AdChart_chartTitle">Likes count</p>
+        <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
+        <div class="AdChart_stats">
+          <app-simple-bar-chart
+            [dataSets]="dataSets"
+            [labels]="labels"
+          ></app-simple-bar-chart>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+

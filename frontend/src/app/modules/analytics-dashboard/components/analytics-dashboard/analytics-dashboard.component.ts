@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {AnalyticsDashboardDataService} from "../../services/analytics-dashboard-data.service";
+import {Label} from "ng2-charts";
+import {ChartDataSets} from "chart.js";
+import {faCog} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-analytics-dashboard',
@@ -6,10 +10,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./analytics-dashboard.component.scss']
 })
 export class AnalyticsDashboardComponent implements OnInit {
+  public dataSets: Array<ChartDataSets> = [];
+  public labels: Array<Label> = [];
+  public cogIcon = faCog;
 
-  constructor() { }
+  constructor(
+      private dataService: AnalyticsDashboardDataService
+  ) { }
 
   ngOnInit(): void {
+    this.loadTweetsCountChartData();
+  }
+
+  private loadTweetsCountChartData(): void {
+    this.dataService.getTweetsCountChartData().subscribe(data => {
+      this.dataSets = data.dataSets;
+      this.labels = data.labels;
+    })
   }
 
 }
