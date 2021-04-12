@@ -14,6 +14,7 @@ export class AnalyticsDashboardComponent implements OnInit {
   public labels: Array<Label> = [];
   public cogIcon = faCog;
   public dataLoaded = false;
+  public open: boolean = false;
 
   constructor(
       private dataService: AnalyticsDashboardDataService

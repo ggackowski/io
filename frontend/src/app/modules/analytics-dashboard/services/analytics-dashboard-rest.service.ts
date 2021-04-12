@@ -14,6 +14,10 @@ export class AnalyticsDashboardRestService {
   ) { }
 
   public getTweetsCountChartData(): Observable<BarChartData> {
-    return this.httpClient.get<BarChartData>('/api/data/infections').pipe(tap(console.log));
+    return this.httpClient.get<BarChartData>('/api/data/infections', {}).pipe(tap(console.log));
+  }
+
+  public getInfectionsDataInRange(startDate: Date, endDate: Date): Observable<BarChartData> {
+    return this.httpClient.get<BarChartData>('/api/data/infections', {});
   }
 }
