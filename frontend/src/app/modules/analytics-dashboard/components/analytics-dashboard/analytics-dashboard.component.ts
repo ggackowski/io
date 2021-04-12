@@ -27,9 +27,9 @@ export class AnalyticsDashboardComponent implements OnInit {
   private loadTweetsCountChartData(): void {
     this.dataService.getTweetsCountChartData().subscribe(data => {
       console.log(data);
-      this.dataSets = data.dataSets;
-      this.labels = data.labels;
-      this.dataLoaded = true;
+      // this.dataSets = data.dataSets;
+      // this.labels = data.date;
+      // this.dataLoaded = true;
     })
   }
 
