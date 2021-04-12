@@ -1,12 +1,17 @@
 from lxml import html
 
-import json
 import requests
+from pymongo import MongoClient
+
+client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
+db = client.io
 
 URL = "https://koronawirusunas.pl/"
 DATA_SOURCE_KEYWORD = "dataSource"
 
 def set_value_type(val: str):
+    if val == "null":
+        return None
     try:
         return int(val)
     except ValueError:
@@ -48,17 +53,18 @@ def handle_variable(name, variable_dict):
     var = ''.join([char for char in list(var) if char not in '[]{; '])
     var = [s for s in var.split("},") if len(s) > 0]
 
-    with open(name + '.json', 'w+') as j:
-        json_entity_list = []
-        for entity in var:
-            json_entity = {}
-            for key_val_pair in entity.split(','):
-                key_val_pair = key_val_pair.split(':')
-                if len(key_val_pair) > 1:
-                    key, val = key_val_pair
-                    json_entity[key] = set_value_type(val)
-            json_entity_list.append(json_entity)
-        json.dump(json_entity_list, j)
+    json_entity_list = []
+    for entity in var:
+        json_entity = {}
+        for key_val_pair in entity.split(','):
+            key_val_pair = key_val_pair.split(':')
+            if len(key_val_pair) > 1:
+                key, val = key_val_pair
+                json_entity[key] = set_value_type(val)
+        json_entity_list.append(json_entity)
+    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': json_entity_list } }, upsert=True)
+
+
 
 if __name__ == '__main__':
 
