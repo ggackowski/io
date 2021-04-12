@@ -1,22 +1,7 @@
 @import "src/colors";
 
+
 .Ad {
-
-  &_background {
-    background-color: white; // #EFEFEF;
-  }
-
-  &_mainSettings {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-  }
-
-  &_grid {
-    padding: 25px;
-    display: flex;
-  }
-
   &Chart {
     &_wrapper {
       margin: 10px;
@@ -50,10 +35,4 @@
       }
     }
   }
-
-  &_titleBanner {
-    margin-top: 20px;
-  }
-
 }
-
