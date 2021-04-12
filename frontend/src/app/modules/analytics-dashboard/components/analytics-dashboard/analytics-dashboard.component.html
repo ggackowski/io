@@ -3,12 +3,15 @@
     <div class="row">
       <div class="col">
         <h1 class="Ad_titleBanner">Analytics Dashboard</h1>
-        <button class="Ad_mainSettings" mat-stroked-button>Options</button>
+        <button class="Ad_mainSettings" [matMenuTriggerFor]="menu" mat-stroked-button>Options</button>
+        <mat-menu #menu="matMenu">
+          <app-options-menu></app-options-menu>
+        </mat-menu>
         <mat-divider></mat-divider>
       </div>
     </div>
     <div class="row Ad_grid">
-      <div class="AdChart_wrapper">
+      <div class="AdChart_wrapper" *ngIf="dataLoaded">
           <p class="AdChart_chartTitle">Tweets count</p>
           <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
           <div class="AdChart_stats">
@@ -19,7 +22,7 @@
           </div>
       </div>
 
-      <div class="AdChart_wrapper">
+      <div class="AdChart_wrapper" *ngIf="dataLoaded">
         <p class="AdChart_chartTitle">Likes count</p>
         <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
         <div class="AdChart_stats">

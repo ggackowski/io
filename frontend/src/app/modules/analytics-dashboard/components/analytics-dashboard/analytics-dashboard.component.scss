@@ -14,14 +14,13 @@
 
   &_grid {
     padding: 25px;
-    display: grid;
-    grid-template-columns: 30% 30% 30%;
-    column-gap: 20px;
+    display: flex;
   }
 
   &Chart {
 
     &_wrapper {
+      margin: 10px;
       position: relative;
       padding: 15px;
       background-color: $grayWhite;

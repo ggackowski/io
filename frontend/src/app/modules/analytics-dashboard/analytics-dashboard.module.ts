@@ -8,6 +8,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatDividerModule} from "@angular/material/divider";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {MatButtonModule} from "@angular/material/button";
+import {MatMenuModule} from "@angular/material/menu";
+import { OptionsMenuComponent } from './components/options-menu/options-menu.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatRadioModule} from "@angular/material/radio";
 
 const routes: Routes = [
   {
@@ -18,7 +22,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AnalyticsDashboardComponent
+    AnalyticsDashboardComponent,
+    OptionsMenuComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +32,9 @@ const routes: Routes = [
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatMenuModule,
+    MatRadioModule
   ]
 })
 export class AnalyticsDashboardModule { }
