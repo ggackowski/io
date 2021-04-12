@@ -12,6 +12,13 @@ import {MatMenuModule} from "@angular/material/menu";
 import { OptionsMenuComponent } from './components/options-menu/options-menu.component';
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {OverlayModule} from "@angular/cdk/overlay";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatInputModule} from "@angular/material/input";
+import {MatNativeDateModule} from "@angular/material/core";
+import { InfectionsDataComponent } from './components/infections-data/infections-data.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -23,7 +30,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AnalyticsDashboardComponent,
-    OptionsMenuComponent
+    OptionsMenuComponent,
+    InfectionsDataComponent
+  ],
+  providers: [
+    MatDatepickerModule
   ],
   imports: [
     CommonModule,
@@ -34,7 +45,12 @@ const routes: Routes = [
     MatButtonModule,
     FontAwesomeModule,
     MatMenuModule,
-    MatRadioModule
+    MatCheckboxModule,
+    OverlayModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    ReactiveFormsModule
   ]
 })
 export class AnalyticsDashboardModule { }

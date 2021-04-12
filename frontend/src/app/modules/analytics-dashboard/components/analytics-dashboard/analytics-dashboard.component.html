@@ -3,24 +3,18 @@
     <div class="row">
       <div class="col">
         <h1 class="Ad_titleBanner">Analytics Dashboard</h1>
-        <button class="Ad_mainSettings" [matMenuTriggerFor]="menu" mat-stroked-button>Options</button>
-        <mat-menu #menu="matMenu">
+        <button class="Ad_mainSettings" (click)="open ? open = false : open = true;" cdkOverlayOrigin #trigger="cdkOverlayOrigin" mat-stroked-button>Options</button>
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="open">
           <app-options-menu></app-options-menu>
-        </mat-menu>
+        </ng-template>
         <mat-divider></mat-divider>
       </div>
     </div>
     <div class="row Ad_grid">
-      <div class="AdChart_wrapper" *ngIf="dataLoaded">
-          <p class="AdChart_chartTitle">Tweets count</p>
-          <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
-          <div class="AdChart_stats">
-            <app-simple-bar-chart
-              [dataSets]="dataSets"
-              [labels]="labels"
-            ></app-simple-bar-chart>
-          </div>
-      </div>
+      <app-infections-data></app-infections-data>
 
       <div class="AdChart_wrapper" *ngIf="dataLoaded">
         <p class="AdChart_chartTitle">Likes count</p>
