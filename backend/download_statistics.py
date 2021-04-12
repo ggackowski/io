@@ -1,9 +1,10 @@
 from lxml import html
 from collections import defaultdict
 from datetime import datetime
+from pymongo import MongoClient
 
 import requests
-from pymongo import MongoClient
+
 
 client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
 db = client.io
@@ -32,10 +33,7 @@ VAR_NAME_MAPPING = {
 }
 
 
-def set_value_type(val: str):
-    if val == "null":
-        return None
-    
+def set_value_type(val: str): 
     try:
         return datetime.strptime(val.replace('"', ''), '%d.%m.%Y')
     except ValueError:
@@ -46,7 +44,8 @@ def set_value_type(val: str):
     except ValueError:
         pass
 
-    return val.replace('"', '')
+    return val.replace('"', '') if val != "null" else None
+
 
 def map_variable_name(name):
     return VAR_NAME_MAPPING.get(name, name)
