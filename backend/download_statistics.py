@@ -53,17 +53,16 @@ def handle_variable(name, variable_dict):
     var = ''.join([char for char in list(var) if char not in '[]{; '])
     var = [s for s in var.split("},") if len(s) > 0]
 
-    json_entity_list = []
+    json_entity_dict = {}
     for entity in var:
-        json_entity = {}
         for key_val_pair in entity.split(','):
             key_val_pair = key_val_pair.split(':')
             if len(key_val_pair) > 1:
                 key, val = key_val_pair
-                json_entity[key] = set_value_type(val)
-        json_entity_list.append(json_entity)
-    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': json_entity_list } }, upsert=True)
-
+                if key not in json_entity_dict:
+                    json_entity_dict[key] = []
+                json_entity_dict[key].append(set_value_type(val))
+    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': json_entity_dict } }, upsert=True)
 
 
 if __name__ == '__main__':
