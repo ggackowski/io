@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
+from pymongo import MongoClient
+from const import *
+
+client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
+db = client.io
 app = Flask(__name__)
 
-
 @app.route('/api/data/infections')
-def hello_world():
-    return jsonify({
-        'dataSets': [{ 'data': [1, 2, 3, 4, 5], 'label': 'test' }],
-        'labels': [ '11.03', '12.03', '13.03', '14.03', '15.03' ]
-    })
+def infectionis():
+    data = db.covid.find_one({ 'name': INFECTIONS })['data']
+    return jsonify(data)
