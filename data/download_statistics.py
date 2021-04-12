@@ -47,7 +47,14 @@ def handle_variable(name, var_dict):
             for pair in tup.split(','):
                 pair = pair.split(':')
                 if len(pair) > 1:
-                    d[pair[0]] = pair[1].replace('"', '')
+                    if pair[1].isdigit():
+                        pair[1] = int(pair[1])
+                    else:
+                        try:
+                            pair[1] = float(pair[1])
+                        except ValueError:
+                            pair[1] = pair[1].replace('"', '')
+                    d[pair[0]] = pair[1]
             data.append(d)
         json.dump(data, j)
 
