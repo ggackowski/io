@@ -30,7 +30,7 @@ def parse_source(source, keyword):
     recur_tree(parsed, script_buffer, 'script')
     script_buffer = [script.text_content() for script in script_buffer if keyword in script.text_content()]
 
-    assert len(script_buffer) == 1, "Variables containing essential data have been either renamed or removed. Check page HTML source"
+    assert len(script_buffer) == 1, "Variables containing essential data have been either renamed or removed. Check page HTML source."
 
     var_dict = parse_script_body(script_buffer[0])
     return var_dict
