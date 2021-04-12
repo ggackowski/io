@@ -1,4 +1,6 @@
 from lxml import html
+from collections import defaultdict
+from datetime import datetime
 
 import requests
 from pymongo import MongoClient
@@ -9,11 +11,33 @@ db = client.io
 URL = "https://koronawirusunas.pl/"
 DATA_SOURCE_KEYWORD = "dataSource"
 
+VAR_NAME_MAPPING = {
+    'country': 'date',
+    'chor': 'active_cases',
+    'wyl': 'cured',
+    'zgo': 'deaths',
+    'zar': 'cases',
+    'arg': 'date',
+    'p_chorzy': 'active_cases',
+    'p_wyleczeni': 'cured',
+    'p_zgony': 'deaths',
+    'liczba': 'number', 
+    'wojewodztwo': 'voivodeship',
+    'kwar': 'quarantained',
+    'nadzor': 'under_probation',
+    'dzien': 'date',
+    'kwar_z': 'quarantained_and_infected',
+    'respiratory': 'life_saving_kit',
+    'l_respiratory': 'used_life_saving_kit'
+}
+
+
 def set_value_type(val: str):
     if val == "null":
         return None
+    
     try:
-        return int(val)
+        return datetime.strptime(val.replace('"', ''), '%d.%m.%Y')
     except ValueError:
         pass
 
@@ -23,6 +47,10 @@ def set_value_type(val: str):
         pass
 
     return val.replace('"', '')
+
+def map_variable_name(name):
+    return VAR_NAME_MAPPING.get(name, name)
+
 
 def parse_script_body(script):
     variables = script.split('var')
@@ -36,6 +64,7 @@ def parse_script_body(script):
             variable_dict[name] = data
     return variable_dict
 
+
 def parse_source(source, keyword):
     xml = html.fromstring(source)
     scripts = [
@@ -48,21 +77,18 @@ def parse_source(source, keyword):
     variable_dict = parse_script_body(scripts[0])
     return variable_dict
 
+
 def handle_variable(name, variable_dict):
     var = variable_dict[name]
     var = ''.join([char for char in list(var) if char not in '[]{; '])
     var = [s for s in var.split("},") if len(s) > 0]
-
-    json_entity_dict = {}
+    entity_dict = defaultdict(list)
     for entity in var:
-        for key_val_pair in entity.split(','):
-            key_val_pair = key_val_pair.split(':')
-            if len(key_val_pair) > 1:
-                key, val = key_val_pair
-                if key not in json_entity_dict:
-                    json_entity_dict[key] = []
-                json_entity_dict[key].append(set_value_type(val))
-    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': json_entity_dict } }, upsert=True)
+        for kv_pair in [kv.split(':') for kv in entity.split(',')]:
+            if len(kv_pair) > 1:
+                key, value = map_variable_name(kv_pair[0]), set_value_type(kv_pair[1])
+                entity_dict[key].append(value)
+    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': entity_dict } }, upsert=True)
 
 
 if __name__ == '__main__':
