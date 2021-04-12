@@ -19,12 +19,6 @@ def set_value_type(val: str):
 
     return val.replace('"', '')
 
-def recur_tree(node, buffer, tag):
-    for child in node:
-        if(child.tag == tag):
-            buffer.append(child)
-        recur_tree(child, buffer, tag)
-
 def parse_script_body(script):
     variables = script.split('var')
     variable_dict = {}
@@ -38,10 +32,11 @@ def parse_script_body(script):
     return variable_dict
 
 def parse_source(source, keyword):
-    parsed = html.fromstring(source)
-    buffer = []
-    recur_tree(parsed, buffer, 'script')
-    scripts = [script.text_content() for script in buffer if keyword in script.text_content()]
+    xml = html.fromstring(source)
+    scripts = [
+        script for script in xml.xpath('//script/text()')
+        if DATA_SOURCE_KEYWORD in script
+    ]
 
     assert len(scripts) == 1, "Variables containing essential data have been either renamed or removed. Check page HTML source."
 
