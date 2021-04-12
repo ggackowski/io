@@ -18,6 +18,6 @@ export class AnalyticsDashboardRestService {
   }
 
   public getInfectionsDataInRange(startDate: Date, endDate: Date): Observable<BarChartData> {
-    return this.httpClient.get<BarChartData>('/api/data/infections', {});
+    return this.httpClient.get<BarChartData>('/api/data/active_cases', {params: {start: startDate.toISOString(), end: endDate.toISOString()}});
   }
 }

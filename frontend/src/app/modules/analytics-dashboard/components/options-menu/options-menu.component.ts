@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AnalyticsDashboardDataService} from "../../services/analytics-dashboard-data.service";
 import {FormControl, FormGroup} from "@angular/forms";
 
@@ -8,6 +8,7 @@ import {FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./options-menu.component.scss']
 })
 export class OptionsMenuComponent implements OnInit {
+  @Output() closeMenu = new EventEmitter();
   public hashtags = ['#koronawirus', '#szczepienia'];
 
   dataRange = new FormGroup({
@@ -26,6 +27,7 @@ export class OptionsMenuComponent implements OnInit {
   public saveSettings(): void {
     this.analyticsDashboardDataService.setDataRange
       (new Date(this.dataRange.get('start')?.value), new Date(this.dataRange.get('end')?.value));
+    this.closeMenu.emit();
   }
 
   private getInitialDataRange(): void {

@@ -8,7 +8,7 @@
           cdkConnectedOverlay
           [cdkConnectedOverlayOrigin]="trigger"
           [cdkConnectedOverlayOpen]="open">
-          <app-options-menu></app-options-menu>
+          <app-options-menu (closeMenu)="open = false"></app-options-menu>
         </ng-template>
         <mat-divider></mat-divider>
       </div>
@@ -16,16 +16,17 @@
     <div class="row Ad_grid">
       <app-infections-data></app-infections-data>
 
-      <div class="AdChart_wrapper" *ngIf="dataLoaded">
-        <p class="AdChart_chartTitle">Likes count</p>
-        <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
-        <div class="AdChart_stats">
-          <app-simple-bar-chart
-            [dataSets]="dataSets"
-            [labels]="labels"
-          ></app-simple-bar-chart>
-        </div>
-      </div>
+
+<!--      <div class="AdChart_wrapper" *ngIf="dataLoaded">-->
+<!--        <p class="AdChart_chartTitle">Likes count</p>-->
+<!--        <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>-->
+<!--        <div class="AdChart_stats">-->
+<!--          <app-simple-bar-chart-->
+<!--            [dataSets]="dataSets"-->
+<!--            [labels]="labels"-->
+<!--          ></app-simple-bar-chart>-->
+<!--        </div>-->
+<!--      </div>-->
 
     </div>
   </div>

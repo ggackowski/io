@@ -13,7 +13,9 @@ export class AnalyticsDashboardDataService {
 
   constructor(
     private restService: AnalyticsDashboardRestService
-  ) { }
+  ) {
+    this.setDataRange(new Date('1.01.2021'), new Date());
+  }
 
   public getTweetsCountChartData(): Observable<BarChartData> {
     return this.restService.getTweetsCountChartData();
@@ -26,7 +28,7 @@ export class AnalyticsDashboardDataService {
   public getDataRange(): {begin: Date, end: Date} {
     return {
       begin: this.startDate,
-      end: this.startDate
+      end: this.endDate
     };
   }
 
