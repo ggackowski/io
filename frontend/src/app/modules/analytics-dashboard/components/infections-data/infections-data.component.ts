@@ -26,9 +26,9 @@ export class InfectionsDataComponent implements OnInit {
 
   private getInfectionsData(): void {
     this.analyticsDashboardDataService.getInfectionsData().subscribe(data => {
-      console.log('new data');
-      this.dataSets = data.dataSets;
-      this.labels = data.labels;
+      this.dataSets =  [{ data: data.value, label: '' }];
+      this.labels.length = 0;
+      this.labels.push(...data.date);
       this.dataLoaded = true;
     })
   }
