@@ -1,0 +1,50 @@
+@import "src/colors";
+
+
+.Ad {
+  &Chart {
+    &_wrapper {
+      margin: 10px;
+      position: relative;
+      width: 700px;
+      height: 400px;
+      background-color: $grayWhite;
+      border-radius: 5px;
+      border: 1px solid $mainColor;
+    }
+
+    &_chartTitle {
+      font-size: 20px;
+      color: $mainColor;
+    }
+
+    &_stats {
+      padding: 45px;
+    }
+
+    &_settingsIcon {
+      color: $mainColor;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      font-size: 20px;
+
+      &:hover {
+        cursor: pointer;
+        color: $secondaryColor;
+      }
+    }
+
+    &_spinnerWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+    }
+  }
+}
+
+
+.spinner {
+
+}

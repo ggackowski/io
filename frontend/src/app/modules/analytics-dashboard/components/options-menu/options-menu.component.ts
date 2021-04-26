@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AnalyticsDashboardDataService} from "../../services/analytics-dashboard-data.service";
+import {AnalyticsDashboardDataService, Hashtag} from "../../services/analytics-dashboard-data.service";
 import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -9,7 +9,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class OptionsMenuComponent implements OnInit {
   @Output() closeMenu = new EventEmitter();
-  public hashtags = ['#koronawirus', '#szczepienia'];
+  public hashtags: Array<Hashtag> = [];
 
   dataRange = new FormGroup({
     start: new FormControl(),
@@ -17,12 +17,12 @@ export class OptionsMenuComponent implements OnInit {
   });
 
   constructor(
-    private analyticsDashboardDataService: AnalyticsDashboardDataService
+    public analyticsDashboardDataService: AnalyticsDashboardDataService
   ) { }
 
   ngOnInit(): void {
     this.getInitialDataRange();
-    this.subscribeToAvailableHashtags();
+    this.getHashtags();
   }
 
   public saveSettings(): void {
@@ -37,10 +37,17 @@ export class OptionsMenuComponent implements OnInit {
     this.dataRange.get('end')?.setValue(end);
   }
 
-  private subscribeToAvailableHashtags(): void {
-    this.analyticsDashboardDataService.getAvailableHashtags().subscribe(hashtags => {
-      this.hashtags = hashtags;
-    });
+  private getHashtags(): void {
+    this.hashtags = this.analyticsDashboardDataService.getHashtags();
   }
 
+  // public toggleHashtag(hashtag: string): void {
+  //   const hashtags = this.analyticsDashboardDataService.selectedHashtags;
+  //   if (hashtags.includes(hashtag)) {
+  //     hashtags.splice(hashtags.indexOf(hashtag), 1);
+  //   } else {
+  //     hashtags.push(hashtag);
+  //   }
+  //   console.log(hashtags);
+  // }
 }

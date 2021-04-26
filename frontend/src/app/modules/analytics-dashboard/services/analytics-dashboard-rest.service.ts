@@ -14,12 +14,22 @@ export class AnalyticsDashboardRestService {
     private httpClient: HttpClient
   ) { }
 
-  public getTweetsCountChartData(): Observable<BarChartData> {
-    return this.httpClient.get<BarChartData>('/api/data/infections', {}).pipe(tap(console.log));
-  }
+  // public getTweetsCountChartData(): Observable<BarChartData> {
+  //   return this.httpClient.get<BarChartData>('/api/data/infections', {}).pipe(tap(console.log));
+  // }
 
   public getAvailableHashtags(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>('/api/data/hashtags');
+  }
+
+  public getTweetsCountInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<BarChartData> {
+    console.log(hashtags);
+    return this.httpClient.get<Array<string>>('/api/data/tweets/count').pipe(tap(console.log));
+
+    return of({
+      date: ['1'],
+      value: [10]
+    }).pipe(delay(200));
   }
 
   public getInfectionsDataInRange(startDate: Date, endDate: Date): Observable<BarChartData> {

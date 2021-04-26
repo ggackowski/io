@@ -15,8 +15,9 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatNativeDateModule} from "@angular/material/core";
 import { InfectionsDataComponent } from './components/infections-data/infections-data.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { TweetsCountComponent } from './components/tweets-count/tweets-count.component';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
   declarations: [
     AnalyticsDashboardComponent,
     OptionsMenuComponent,
-    InfectionsDataComponent
+    InfectionsDataComponent,
+    TweetsCountComponent
   ],
   providers: [
     MatDatepickerModule
@@ -49,7 +51,8 @@ const routes: Routes = [
     MatNativeDateModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormsModule
   ]
 })
 export class AnalyticsDashboardModule { }
