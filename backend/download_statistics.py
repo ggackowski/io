@@ -81,13 +81,16 @@ def handle_variable(name, variable_dict):
     var = variable_dict[name]
     var = ''.join([char for char in list(var) if char not in '[]{; '])
     var = [s for s in var.split("},") if len(s) > 0]
-    entity_dict = defaultdict(list)
+    entity_list = []
     for entity in var:
+        entity_list.append({})
         for kv_pair in [kv.split(':') for kv in entity.split(',')]:
             if len(kv_pair) > 1:
                 key, value = map_variable_name(kv_pair[0]), set_value_type(kv_pair[1])
-                entity_dict[key].append(value)
-    db.covid.update_one({ 'name': name }, { '$set' : { 'name': name, 'data': entity_dict } }, upsert=True)
+                entity_list[-1][key] = value
+    for entity in entity_list:
+        if entity:
+            db[name].update_one(entity, { '$set' : entity}, upsert=True)
 
 
 if __name__ == '__main__':
