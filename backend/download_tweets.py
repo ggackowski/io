@@ -3,6 +3,7 @@ import twint
 import logging
 import sys
 from pymongo import MongoClient
+from datetime import datetime
 
 logging.basicConfig(level=logging.WARN)
 client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
@@ -52,7 +53,7 @@ def download_tweets(criteria_dict):
                 'likes_count': tweet.likes_count,
                 'replies_count': tweet.replies_count,
                 'retweets_count': tweet.retweets_count,
-                'date': tweet.datetime,
+                'date': datetime.fromisoformat(tweet.datetime.split(" ")[0]),
             }
             db.tweets.update_one({ "tweetid": tweet.id }, {"$set": obj}, True)
 
