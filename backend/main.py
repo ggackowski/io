@@ -24,7 +24,23 @@ def get_infectionis():
 
 @app.route('/api/data/hashtags')
 def get_hashtags():
-    return jsonify(hashtags)
+    return jsonify(hashtags, ensure_ascii=False)
+
+@app.route('/api/data/tweets/count')
+def get_tweets():
+    start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
+    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
+
+    df = pd.DataFrame(db.tweets.aggregate([
+        { "$match" : { "date" : { "$gte": start, "$lt": end } } },
+        { "$group": { "_id": "$date", "count": { "$sum": 1 } } }
+    ]))
+
+    return jsonify({
+        'date': list(df['_id']),
+        'values': list(df['count'])
+    })
+
 
 hashtags = []
 with open('./twint_criteria.json') as file:
