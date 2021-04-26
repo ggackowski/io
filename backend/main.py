@@ -14,13 +14,12 @@ def get_infectionis():
     start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
     end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
 
-    df = pd.DataFrame(db.covid.find_one({ 'name': INFECTIONS })['data'])
-    df = df.rename(columns={'active_cases': 'value'})[['date', 'value']]
-    df = df[start <= df.date]
-    df = df[df.date <= end]
-    response = make_response(df.to_json())
-    response.mimetype = 'application/json'
-    return response
+    df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
+
+    return jsonify({
+        'date': list(df['date']),
+        'value': list(df['active_cases'])
+    })
 
 @app.route('/api/data/hashtags')
 def get_hashtags():
@@ -32,8 +31,9 @@ def get_tweets():
     end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
 
     df = pd.DataFrame(db.tweets.aggregate([
-        { "$match" : { "date" : { "$gte": start, "$lt": end } } },
-        { "$group": { "_id": "$date", "count": { "$sum": 1 } } }
+        { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+        { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+        { "$sort" : { "_id" : 1 } }
     ]))
 
     return jsonify({
