@@ -57,10 +57,11 @@ def download_tweets(criteria_dict):
             db.tweets.update_one({ "tweetid": tweet.id }, {"$set": obj}, True)
 
         apply_twint_criteria(c, criteria)
-        # Example date: 2017-12-27
+        # Example date format: 2017-12-27
         twint.run.Search(c)
 
 
 if __name__ == '__main__':
-    twint_criteria = json.load(sys.argv[1])    
-    download_tweets(twint_criteria)
+    with open(sys.argv[1], "r") as file:
+        twint_criteria = json.load(file)
+        download_tweets(twint_criteria)
