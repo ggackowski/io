@@ -3,13 +3,14 @@ from pymongo import MongoClient
 from datetime import datetime
 import pandas as pd
 from const import *
+import json
 
 client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
 db = client.io
 app = Flask(__name__)
 
 @app.route('/api/data/active_cases')
-def infectionis():
+def get_infectionis():
     start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
     end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
 
@@ -20,3 +21,12 @@ def infectionis():
     response = make_response(df.to_json())
     response.mimetype = 'application/json'
     return response
+
+@app.route('/api/data/hashtags')
+def get_hashtags():
+    return jsonify(hashtags)
+
+hashtags = []
+with open('./twint_criteria.json') as file:
+    twint_criteria = json.load(file)
+    hashtags = [criteria['hashtag'] for criteria in twint_criteria if 'hashtag' in criteria]
