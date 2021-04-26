@@ -20,12 +20,19 @@ export class InfectionsDataComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subscribeToLoadingDataSubject();
     this.getInfectionsData();
   }
 
+  private subscribeToLoadingDataSubject(): void {
+    this.analyticsDashboardDataService.getLoadingDataSubject().subscribe(() => {
+      this.dataLoaded = false;
+    });
+  }
 
   private getInfectionsData(): void {
     this.analyticsDashboardDataService.getInfectionsData().subscribe(data => {
+      console.log(data);
       this.dataSets =  [{ data: data.value, label: '' }];
       this.labels.length = 0;
       this.labels.push(...data.date);

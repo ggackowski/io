@@ -1,10 +1,16 @@
-<div class="AdChart_wrapper" *ngIf="dataLoaded">
-  <p class="AdChart_chartTitle">Infections data</p>
-  <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
-  <div class="AdChart_stats">
-    <app-simple-bar-chart
-      [dataSets]="dataSets"
-      [labels]="labels"
-    ></app-simple-bar-chart>
+<div class="AdChart_wrapper">
+  <div *ngIf="dataLoaded">
+    <p class="AdChart_chartTitle">Infections data</p>
+    <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
+    <div class="AdChart_stats">
+      <app-simple-bar-chart
+        [dataSets]="dataSets"
+        [labels]="labels"
+      ></app-simple-bar-chart>
+    </div>
+  </div>
+  <div class="AdChart_spinnerWrapper">
+  <mat-spinner class="spinner" *ngIf="!dataLoaded"></mat-spinner>
   </div>
 </div>
+

@@ -22,6 +22,7 @@ export class OptionsMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.getInitialDataRange();
+    this.subscribeToAvailableHashtags();
   }
 
   public saveSettings(): void {
@@ -34,6 +35,12 @@ export class OptionsMenuComponent implements OnInit {
     const { begin, end } = this.analyticsDashboardDataService.getDataRange();
     this.dataRange.get('start')?.setValue(begin);
     this.dataRange.get('end')?.setValue(end);
+  }
+
+  private subscribeToAvailableHashtags(): void {
+    this.analyticsDashboardDataService.getAvailableHashtags().subscribe(hashtags => {
+      this.hashtags = hashtags;
+    });
   }
 
 }

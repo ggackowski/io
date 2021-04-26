@@ -4,14 +4,11 @@ import { AnalyticsDashboardComponent } from './components/analytics-dashboard/an
 import {RouterModule, Routes} from "@angular/router";
 import {SimpleBarChartModule} from "../../commons/components/simple-bar-chart/simple-bar-chart.module";
 import {MatCardModule} from "@angular/material/card";
-import {HttpClientModule} from "@angular/common/http";
 import {MatDividerModule} from "@angular/material/divider";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import { OptionsMenuComponent } from './components/options-menu/options-menu.component';
-import {MatSelectModule} from "@angular/material/select";
-import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {OverlayModule} from "@angular/cdk/overlay";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -19,6 +16,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatNativeDateModule} from "@angular/material/core";
 import { InfectionsDataComponent } from './components/infections-data/infections-data.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 const routes: Routes = [
   {
@@ -50,7 +48,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AnalyticsDashboardModule { }
