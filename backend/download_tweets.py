@@ -1,6 +1,10 @@
-import sys
-# sys.path.append("../libs/twint/")
 import twint
+import logging
+from pymongo import MongoClient
+
+logging.basicConfig(level=logging.WARN)
+client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
+db = client.io
 
 twint_criteria_dummy = [
     {"dateFrom": "2021-04-19", "dateTo": "2021-04-19", "hashtag": "SzczepimySie"},
@@ -85,6 +89,19 @@ def apply_twint_criteria(config, criteria):
 def download_tweets(criteria_dict):
     for criteria in criteria_dict:
         c = twint.Config()
+
+        @c.onTweet
+        def onTweet(tweet):
+            obj = {
+                'username': tweet.username,
+                'hashtags': tweet.hashtags,
+                'likes_count': tweet.likes_count,
+                'replies_count': tweet.replies_count,
+                'retweets_count': tweet.retweets_count,
+                'date': tweet.datetime,
+            }
+            db.tweets.update_one(obj, {"$set": obj}, True)
+
         apply_twint_criteria(c, criteria)
         # Example date: 2017-12-27
         # not retweets?
