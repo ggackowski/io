@@ -1,59 +1,12 @@
+import json
 import twint
 import logging
+import sys
 from pymongo import MongoClient
 
 logging.basicConfig(level=logging.WARN)
 client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
 db = client.io
-
-twint_criteria_dummy = [
-    {"dateFrom": "2021-04-19", "dateTo": "2021-04-19", "hashtag": "SzczepimySie"},
-    {"dateFrom": "2021-04-19", "dateTo": "2021-04-19", "hashtag": "KoronawirusWPolsce"},
-]
-
-twint_criteria = [
-    {
-        "hashtag": "lockdown"
-    },
-    {
-        "hashtag": "coronavirus"
-    },
-    {
-        "hashtag": "koronawirus"
-    },
-    {
-        "hashtag": "COVID-19"
-    },
-    {
-        "hashtag": "pandemia"
-    },
-    {
-        "hashtag": "kwarantanna"
-    },
-    {
-        "hashtag": "szzcepienia"
-    },
-    {
-        "hashtag": "szczepienie"
-    },
-    {
-        "hashtag": "obostrzenia"
-    },
-    {
-        "hashtag": "SzczepimySię"
-    },
-    {
-        "hashtag": "KoronawirusWPolsce"
-    },
-    {
-        "hashtag": "MaskujSię"
-    },
-    {
-    },
-    {
-    },
-]
-
 
 def apply_twint_criteria(config, criteria):
     config.Lang = "pl"
@@ -93,6 +46,7 @@ def download_tweets(criteria_dict):
         @c.onTweet
         def onTweet(tweet):
             obj = {
+                'tweetid': tweet.id,
                 'username': tweet.username,
                 'hashtags': tweet.hashtags,
                 'likes_count': tweet.likes_count,
@@ -100,16 +54,13 @@ def download_tweets(criteria_dict):
                 'retweets_count': tweet.retweets_count,
                 'date': tweet.datetime,
             }
-            db.tweets.update_one(obj, {"$set": obj}, True)
+            db.tweets.update_one({ "tweetid": tweet.id }, {"$set": obj}, True)
 
         apply_twint_criteria(c, criteria)
         # Example date: 2017-12-27
-        # not retweets?
         twint.run.Search(c)
 
 
 if __name__ == '__main__':
-    download_tweets(twint_criteria_dummy)
-
-    # add to DB; index by Tweet ID to avoid repeats
-    # remove tweeets.json
+    twint_criteria = json.load(sys.argv[1])    
+    download_tweets(twint_criteria)
