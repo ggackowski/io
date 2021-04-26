@@ -33,7 +33,7 @@ export class TweetsCountComponent implements OnInit {
   private getTweetsCountData(): void {
     this.analyticsDashboardDataService.getTweetsInRange().subscribe(data => {
       console.log(data);
-      this.dataSets =  [{ data: data.value, label: '' }];
+      this.dataSets =  [{ data: data.value, label: 'Tweets' }];
       this.labels.length = 0;
       this.labels.push(...data.date);
       this.dataLoaded = true;

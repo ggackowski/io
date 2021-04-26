@@ -24,7 +24,9 @@ export class AnalyticsDashboardRestService {
 
   public getTweetsCountInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<BarChartData> {
     console.log(hashtags);
-    return this.httpClient.get<Array<string>>('/api/data/tweets/count').pipe(tap(console.log));
+    return this.httpClient.get<Array<string>>('/api/data/tweets/count', {params: {start:
+          startDate.toISOString(),
+        end: endDate.toISOString()}}).pipe(tap(console.log));
 
     return of({
       date: ['1'],

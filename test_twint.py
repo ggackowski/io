@@ -4,7 +4,7 @@ import twint
 
 
 c = twint.Config()
-c.Username = "Piechocinski"
+c.Username = "MZ_GOV_PL"
 c.Store_json = True
 c.Output = "janusz.json"
 c.Lang = "pl"

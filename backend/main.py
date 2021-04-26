@@ -24,7 +24,7 @@ def get_infectionis():
 
 @app.route('/api/data/hashtags')
 def get_hashtags():
-    return jsonify(hashtags, ensure_ascii=False)
+    return jsonify(hashtags)
 
 @app.route('/api/data/tweets/count')
 def get_tweets():
@@ -38,7 +38,7 @@ def get_tweets():
 
     return jsonify({
         'date': list(df['_id']),
-        'values': list(df['count'])
+        'value': list(df['count'])
     })
 
 
