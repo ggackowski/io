@@ -24,9 +24,12 @@ export class AnalyticsDashboardRestService {
 
   public getTweetsCountInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<BarChartData> {
     console.log(hashtags);
-    return this.httpClient.get<Array<string>>('/api/data/tweets/count', {params: {start:
+    return this.httpClient.get<BarChartData>('/api/data/tweets/count', {params: {start:
           startDate.toISOString(),
-        end: endDate.toISOString()}}).pipe(tap(console.log));
+        end: endDate.toISOString()}}).pipe(map(data => {
+      data.date = data.date.map(x => dateTimeFormat.format(new Date(x as string)))
+      return data
+    }), tap(console.log));
   }
 
   public getInfectionsDataInRange(startDate: Date, endDate: Date): Observable<BarChartData> {
