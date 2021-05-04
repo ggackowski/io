@@ -12,8 +12,8 @@ COLLECTION_MAPPING: Dict[str, str] = {
     "cured": "populationData",
     "under_probation": "dataSource_hospitalizacja",
     "used_life_saving_kit": "respiratoryData",
-    "d_szczepienia": "dataSource_szczepienia",
-    "szczepienia": "dataSource_szczepienia",
+    "vaccinated": "dataSource_szczepienia",
+    "total_vaccinated": "dataSource_szczepienia",
 }
 
 

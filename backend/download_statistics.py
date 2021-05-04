@@ -29,7 +29,9 @@ VAR_NAME_MAPPING = {
     'dzien': 'date',
     'kwar_z': 'quarantained_and_infected',
     'respiratory': 'life_saving_kit',
-    'l_respiratory': 'used_life_saving_kit'
+    'l_respiratory': 'used_life_saving_kit',
+    'd_szczepienia': 'vaccinated',
+    'szczepienia': 'total_vaccinated'
 }
 
 
