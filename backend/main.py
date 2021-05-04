@@ -38,32 +38,52 @@ def get_infectionis_today():
 def get_hashtags():
     return jsonify(hashtags)
 
-@app.route('/api/data/tweets/count')
+@app.route('/api/data/tweets/count', methods=['POST'])
 def get_tweets():
-    start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
-    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
+    start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
+    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    tags = request.json['tags']
 
-    df = pd.DataFrame(db.tweets.aggregate([
-        { "$match" : { "date" : { "$gte": start, "$lte": end } } },
-        { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
-        { "$sort" : { "_id" : 1 } }
-    ]))
+    if tags:
+        df = pd.DataFrame(db.tweets.aggregate([
+            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+            { "$project": { "tags": {"$size": {"$setIntersection": ["$hashtags", hashtags] }}, "date": True}},
+            { "$match" : { "tags" : { "$ne": 0 } } },
+            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+            { "$sort" : { "_id" : 1 } }
+        ]))
+    else:
+        df = pd.DataFrame(db.tweets.aggregate([
+            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+            { "$sort" : { "_id" : 1 } }
+        ]))
 
     return jsonify({
         'date': list(df['_id']),
         'value': list(df['count'])
     })
 
-@app.route('/api/data/tweets/count')
+@app.route('/api/data/tweets/count', methods=['POST'])
 def get_tweets_today():
-    start = datetime.fromisoformat(request.args.get('start').replace("Z", "")) - timedelta(days=1)
-    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
+    start = datetime.fromisoformat(request.json['start'].replace("Z", "")) - timedelta(days=1)
+    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    tags = request.json['tags']
 
-    df = pd.DataFrame(db.tweets.aggregate([
-        { "$match" : { "date" : { "$gte": start, "$lte": end } } },
-        { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
-        { "$sort" : { "_id" : 1 } }
-    ]))
+    if tags:
+        df = pd.DataFrame(db.tweets.aggregate([
+            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+            { "$project": { "tags": {"$size": {"$setIntersection": ["$hashtags", hashtags] }}, "date": True}},
+            { "$match" : { "tags" : { "$ne": 0 } } },
+            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+            { "$sort" : { "_id" : 1 } }
+        ]))
+    else:
+        df = pd.DataFrame(db.tweets.aggregate([
+            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+            { "$sort" : { "_id" : 1 } }
+        ]))
 
     return jsonify({
         'date': list(df['_id'])[1:],
