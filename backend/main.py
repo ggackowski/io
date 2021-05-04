@@ -30,7 +30,7 @@ def get_infectionis_today():
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
     return jsonify({
-        'date': list(np.array(df['date'])[1:]),
+        'date': list(df['date'])[1:],
         'value': list(np.array(df['active_cases'])[:-1] - np.array(df['active_cases'])[1:])
     })
 
@@ -66,7 +66,7 @@ def get_tweets_today():
     ]))
 
     return jsonify({
-        'date': list(np.array(df['_id'])[1:]),
+        'date': list(df['_id'])[1:],
         'value': list(np.array(df['count'])[:-1] - np.array(df['count'])[1:])
     })
 
