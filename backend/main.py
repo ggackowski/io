@@ -30,7 +30,7 @@ def get_infectionis_today():
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
     return jsonify({
-        'date': list(df['date'][1:]),
+        'date': list(np.array(df['date'])[1:]),
         'value': list(np.array(df['active_cases'])[:-1] - np.array(df['active_cases'])[1:])
     })
 
@@ -54,6 +54,21 @@ def get_tweets():
         'value': list(df['count'])
     })
 
+@app.route('/api/data/tweets/count')
+def get_tweets_today():
+    start = datetime.fromisoformat(request.args.get('start').replace("Z", "")) - timedelta(days=1)
+    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
+
+    df = pd.DataFrame(db.tweets.aggregate([
+        { "$match" : { "date" : { "$gte": start, "$lte": end } } },
+        { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+        { "$sort" : { "_id" : 1 } }
+    ]))
+
+    return jsonify({
+        'date': list(np.array(df['_id'])[1:]),
+        'value': list(np.array(df['count'])[:-1] - np.array(df['count'])[1:])
+    })
 
 hashtags = []
 with open('./twint_criteria.json') as file:
