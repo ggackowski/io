@@ -48,6 +48,7 @@ def get_tweets():
         df = pd.DataFrame(db.tweets.aggregate([
             { "$match" : { "date" : { "$gte": start, "$lte": end } } },
             { "$project": { "tags": {"$size": {"$setIntersection": ["$hashtags", hashtags] }}, "date": True}},
+            { "$match" : { "tags" : { "$ne": 0 } } },
             { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
             { "$sort" : { "_id" : 1 } }
         ]))
@@ -73,6 +74,7 @@ def get_tweets_today():
         df = pd.DataFrame(db.tweets.aggregate([
             { "$match" : { "date" : { "$gte": start, "$lte": end } } },
             { "$project": { "tags": {"$size": {"$setIntersection": ["$hashtags", hashtags] }}, "date": True}},
+            { "$match" : { "tags" : { "$ne": 0 } } },
             { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
             { "$sort" : { "_id" : 1 } }
         ]))
