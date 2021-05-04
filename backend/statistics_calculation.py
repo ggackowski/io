@@ -20,8 +20,8 @@ COLLECTION_MAPPING: Dict[str, str] = {
 STATISTIC_MAPPING: Dict[str, Callable[[List[Union[int, float]]], any]] = {
     "mean": np.mean,
     "standard_deviation": np.std,
-    "minimal value": np.min,
-    "maximal value": np.max,
+    "minimal_value": np.min,
+    "maximal_value": np.max,
 }
 
 
@@ -40,6 +40,3 @@ def get_statistics_for_range(start_date: str, end_date: str, data_type: str, sta
         return STATISTIC_MAPPING[statistic](get_data_for_range(start_date, end_date, data_type))
     except ValueError:
         return None
-
-
-print(get_statistics_for_range("04.03.2020", "04.05.2020", "deaths", "mean"))
