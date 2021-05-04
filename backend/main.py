@@ -10,10 +10,10 @@ client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?re
 db = client.io
 app = Flask(__name__)
 
-@app.route('/api/data/active_cases', methods=['POST'])
+@app.route('/api/data/active_cases')
 def get_infectionis():
-    start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
-    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
+    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
 
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
@@ -22,10 +22,10 @@ def get_infectionis():
         'value': list(df['active_cases'])
     })
 
-@app.route('/api/data/active_cases/today', methods=['POST'])
+@app.route('/api/data/active_cases/today')
 def get_infectionis_today():
-    start = datetime.fromisoformat(request.json['start'].replace("Z", "")) - timedelta(days=1)
-    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    start = datetime.fromisoformat(request.args.get('start').replace("Z", "")) - timedelta(days=1)
+    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
 
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
