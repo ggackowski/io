@@ -28,6 +28,12 @@ def get_infectionis():
             { 'displayName': 'Active cases', 'type': 'bar', 'value': list(df['active_cases']) },
             { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['active_cases'], avg)) },
             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]) },
+        ],
+        'stats': [
+            { 'displayName': 'Mean', 'value': np.mean(df['active_cases']) },
+            { 'displayName': 'Min', 'value': np.min(df['active_cases']) },
+            { 'displayName': 'Max', 'value': np.max(df['active_cases']) },
+            { 'displayName': 'Std', 'value': np.std(df['active_cases']) },
         ]
     })
 
@@ -63,6 +69,14 @@ def get_tweets():
             { 'displayName': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
             { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(map(int, np.array(df['count'])[1:] - np.array(df['count'])[:-1])) } ]
+#             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['count'], dtype=np.int32)[1:] - np.array(df['count'], dtype=np.int32)[:-1]) }
+        ],
+        'stats': [
+            { 'displayName': 'Mean', 'value': np.mean(df['count']) },
+            { 'displayName': 'Min', 'value': np.min(df['count']) },
+            { 'displayName': 'Max', 'value': np.max(df['count']) },
+            { 'displayName': 'Std', 'value': np.std(df['count']) },
+        ]
     })
 
 hashtags = []
