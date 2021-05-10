@@ -58,16 +58,13 @@ def download_tweets_until(date, criteria=None):
             date = max(date, criteriaStatus["dateTo"])
         if "downloadedFrom" in criteriaStatus:
             while criteriaStatus["downloadedFrom"] > criteriaStatus["dateFrom"]:
-                download_daily_tweets(criteriaStatus["downloadedFrom"] - timedelta(days=1), criteriaStatus.copy())
-                criteriaStatus["downloadedFrom"] -= timedelta(days=1)
+                download_daily_tweets(criteriaStatus["downloadedFrom"] - timedelta(days=1), criteriaStatus)
             while criteriaStatus["downloadedTo"] < date:
-                download_daily_tweets(criteriaStatus["downloadedTo"] + timedelta(days=1), criteriaStatus.copy())
-                criteriaStatus["downloadedTo"] += timedelta(days=1)
+                download_daily_tweets(criteriaStatus["downloadedTo"] + timedelta(days=1), criteriaStatus)
         else:
             date_to_download = criteriaStatus["dateFrom"]
             while date_to_download <= date:
-                download_daily_tweets(date_to_download, criteriaStatus.copy())
-                date_to_download += timedelta(days=1)
+                download_daily_tweets(date_to_download, criteriaStatus)
 
 
 def download_daily_tweets(date, criteria=None):
@@ -112,6 +109,7 @@ def download_daily_tweets(date, criteria=None):
             criteria["downloadedFrom"] = min(criteria["downloadedFrom"], date)
         else:
             criteria["downloadedFrom"] = date
+
         if "downloadedTo" in criteria:
             criteria["downloadedTo"] = max(criteria["downloadedTo"], date)
         else:
