@@ -14,13 +14,13 @@ export interface AvgChartData extends BarChartData {
 export interface GenericChartData {
   date: Array<Label>;
   values: Array<ChartValue>;
+  stats: Array<ChartStats>;
 }
 
 export interface ChartValue {
   displayName: string;
   type: string;
   value: Array<number>;
-  stats: Array<ChartStats>;
 }
 
 // export interface Interface {

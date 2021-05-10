@@ -21,6 +21,10 @@ export class InfectionsDataComponent implements OnInit {
   public labels: Array<Label> = [];
   public cogIcon = faCog;
   public dataLoaded = false;
+  public min: number = 0;
+  public max: number = 0;
+  public mean: number = 0;
+  public std: number = 0;
 
   constructor(
     private analyticsDashboardDataService: AnalyticsDashboardDataService
@@ -63,6 +67,10 @@ export class InfectionsDataComponent implements OnInit {
 
     this.dataSets = temp;
     this.labels.push(...data.date);
+    this.mean = Math.floor(data.stats[0].value);
+    this.min = Math.floor(data.stats[1].value);
+    this.max = Math.floor(data.stats[2].value);
+    this.std = Math.floor(data.stats[3].value);
     //conso
     setTimeout(() => this.dataLoaded = true, 100);
   }

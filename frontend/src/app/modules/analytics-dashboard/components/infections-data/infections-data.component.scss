@@ -20,6 +20,15 @@
       color: $mainColor;
     }
 
+    &_text {
+      color: $mainColor;
+    }
+
+    &_number {
+      color: $secondaryColor;
+      margin-bottom: 0;
+    }
+
     &_stats {
       padding: 45px;
     }

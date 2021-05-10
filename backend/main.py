@@ -71,10 +71,10 @@ def get_tweets():
             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(map(int, np.array(df['count'])[1:] - np.array(df['count'])[:-1])) }
         ],
         'stats': [
-            { 'displayName': 'Mean', 'value': np.mean(df['count']) },
-            { 'displayName': 'Min', 'value': np.min(df['count']) },
-            { 'displayName': 'Max', 'value': np.max(df['count']) },
-            { 'displayName': 'Std', 'value': np.std(df['count']) },
+            { 'displayName': 'Mean', 'value': int(np.mean(df['count'])) },
+            { 'displayName': 'Min', 'value': int(np.min(df['count'])) },
+            { 'displayName': 'Max', 'value': int(np.max(df['count'])) },
+            { 'displayName': 'Std', 'value': int(np.std(df['count'])) },
         ]
     })
 
