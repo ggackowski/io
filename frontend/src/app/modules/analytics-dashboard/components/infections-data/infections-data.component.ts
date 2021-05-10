@@ -63,6 +63,7 @@ export class InfectionsDataComponent implements OnInit {
 
     this.dataSets = temp;
     this.labels.push(...data.date);
+    //conso
     setTimeout(() => this.dataLoaded = true, 100);
   }
 

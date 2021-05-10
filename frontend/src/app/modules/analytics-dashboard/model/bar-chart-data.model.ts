@@ -20,4 +20,14 @@ export interface ChartValue {
   displayName: string;
   type: string;
   value: Array<number>;
+  stats: Array<ChartStats>;
+}
+
+// export interface Interface {
+//
+// }
+
+export interface ChartStats {
+  displayName: string;
+  value: number;
 }
