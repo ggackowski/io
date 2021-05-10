@@ -6,6 +6,32 @@
     background-color: white; // #EFEFEF;
   }
 
+  &_today {
+    color: $mainColor;
+    min-height: 200px;
+    background-color: $grayWhite;
+    border-radius: 5px;
+    border: 1px solid $mainColor;
+
+    &_head {
+      margin-top: 10px;
+      margin-left: 10px;
+      font-size: 20px;
+      color: $mainColor
+    }
+
+    &_desc {
+      font-weight: 400;
+      font-size: 24px;
+    }
+
+    &_num {
+      font-weight: 400;
+      font-size: 32px;
+      color: $secondaryColor;
+    }
+  }
+
   &_mainSettings {
     position: absolute;
     top: 16px;
