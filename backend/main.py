@@ -37,7 +37,8 @@ def get_infectionis_today():
 
     return jsonify({
         'date': list(df['date'])[1:],
-        'value': list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1])
+        'value': list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]),
+        'avg': []
     })
 
 @app.route('/api/data/hashtags')
@@ -95,7 +96,8 @@ def get_tweets_today():
 
     return jsonify({
         'date': list(df['_id'])[1:],
-        'value': list(np.array(df['count'])[1:] - np.array(df['count'])[:-1])
+        'value': list(np.array(df['count'])[1:] - np.array(df['count'])[:-1]),
+        'avg': []
     })
 
 hashtags = []
