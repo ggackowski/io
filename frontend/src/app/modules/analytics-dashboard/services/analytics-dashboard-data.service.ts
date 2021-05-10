@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {AnalyticsDashboardRestService} from "./analytics-dashboard-rest.service";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {AvgChartData, BarChartData, GenericChartData} from "../model/bar-chart-data.model";
-import {map, tap} from "rxjs/operators";
+import {filter, map, tap} from "rxjs/operators";
 
 export interface Hashtag {
   name: string;
@@ -13,8 +13,11 @@ export interface Hashtag {
   providedIn: 'root'
 })
 export class AnalyticsDashboardDataService {
-  private infectionsData = new Subject<GenericChartData>();
-  private tweetsCount = new Subject<GenericChartData>();
+  private data = new Subject<GenericChartData>();
+  // @ts-ignore
+  private infectionsData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private tweetsCount = new BehaviorSubject<GenericChartData>(null);
   private dataFirstLoaded = false;
   private loadingData = new Subject<void>();
   private hashtags: Array<Hashtag> = [];
@@ -28,6 +31,10 @@ export class AnalyticsDashboardDataService {
     this.getAvailableHashtags();
   }
 
+  public getData(): Observable<GenericChartData> {
+    return this.data.pipe(filter(x => x !== null));
+  }
+
   public getLoadingDataSubject(): Subject<void> {
     return this.loadingData;
   }
@@ -36,10 +43,11 @@ export class AnalyticsDashboardDataService {
     return this.hashtags;
   }
 
-  public getDataByName(dataName: string): Subject<GenericChartData> {
+  public getDataByName(dataName: string): BehaviorSubject<GenericChartData> {
     if (dataName === 'tweetsCount') return this.tweetsCount;
     if (dataName === 'infectionsCount') return this.infectionsData;
-    return new Subject<GenericChartData>();
+    // @ts-ignore
+    return new BehaviorSubject<GenericChartData>(null);
   }
 
   // public getTweetsCountChartData(): Observable<BarChartData> {
@@ -79,7 +87,7 @@ export class AnalyticsDashboardDataService {
     this.dataFirstLoaded = true;
     this.loadingData.next();
     this.restService.getInfectionsDataInRange(this.startDate, this.endDate).pipe(tap(console.log))
-      .subscribe(data => this.infectionsData.next(data));
+      .subscribe(data => { this.infectionsData.next(data) });
     this.restService.getTweetsCountInRange(this.startDate, this.endDate, this.getUsedHashtags()).subscribe(
       data => this.tweetsCount.next(data)
     );

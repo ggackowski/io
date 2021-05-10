@@ -1,12 +1,34 @@
 <div class="AdChart_wrapper">
+  <button mat-button >Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let item of possibleDataSources" (click)="changeGraph(item)">{{item}}</button>
+  </mat-menu>
   <div *ngIf="dataLoaded">
     <p class="AdChart_chartTitle">Infections data</p>
-    <fa-icon class="AdChart_settingsIcon" [icon]="cogIcon"></fa-icon>
+    <fa-icon class="AdChart_settingsIcon" [matMenuTriggerFor]="menu" [icon]="cogIcon"></fa-icon>
     <div class="AdChart_stats">
       <app-simple-bar-chart
         [dataSets]="dataSets"
         [labels]="labels"
       ></app-simple-bar-chart>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 text-center">
+        <h3>3242</h3>
+        <h4>Average</h4>
+      </div>
+      <div class="col-lg-3 text-center">
+        <h3>3242</h3>
+        <h4>Average</h4>
+      </div>
+      <div class="col-lg-3 text-center">
+        <h3>3242</h3>
+        <h4>Average</h4>
+      </div>
+      <div class="col-lg-3 text-center">
+        <h3>3242</h3>
+        <h4>Average</h4>
+      </div>
     </div>
   </div>
   <div class="AdChart_spinnerWrapper">

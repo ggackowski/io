@@ -62,8 +62,7 @@ def get_tweets():
         'values': [
             { 'displayName': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
             { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
-#             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['count'], dtype=np.int32)[1:] - np.array(df['count'], dtype=np.int32)[:-1]) }
-        ]
+            { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(map(int, np.array(df['count'])[1:] - np.array(df['count'])[:-1])) } ]
     })
 
 hashtags = []
