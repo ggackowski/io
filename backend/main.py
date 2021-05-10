@@ -24,9 +24,11 @@ def get_infectionis():
 
     return jsonify({
         'date': list(df['date']),
-        'value': list(df['active_cases']),
-        'avg': list(moving_average(df['active_cases'], avg)),
-        'diff': [0] + list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]),
+        'values': [
+            { 'displayname': 'Active cases', 'type': 'bar', 'value': list(df['active_cases']) },
+            { 'displayname': 'Running average', 'type': 'line', 'value': list(moving_average(df['active_cases'], avg)) },
+            { 'displayname': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]) },
+        ]
     })
 
 @app.route('/api/data/hashtags')
@@ -57,9 +59,11 @@ def get_tweets():
 
     return jsonify({
         'date': list(df['_id']),
-        'value': list(df['count']),
-        'avg': list(moving_average(df['count'], avg)),
-        'diff': [0] + list(np.array(df['count'])[1:] - np.array(df['count'])[:-1]),
+        'values': [
+            { 'displayname': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
+            { 'displayname': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
+            { 'displayname': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['count'])[1:] - np.array(df['count'])[:-1]) },
+        ]
     })
 
 hashtags = []
