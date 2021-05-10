@@ -18,15 +18,35 @@ export class AnalyticsDashboardRestService {
   //   return this.httpClient.get<BarChartData>('/api/data/infections', {}).pipe(tap(console.log));
   // }
 
+  public getNewCasesInDays(startDate: Date, endDate: Date): Observable<BarChartData> {
+    return this.httpClient.get<BarChartData>('/api/data/active_cases/today',
+      {params: {start: startDate.toISOString(), end: endDate.toISOString()}})
+      .pipe(map(data => {
+        data.date = data.date.map(x => dateTimeFormat.format(new Date(x as string)))
+        return data
+      }), tap(console.log));
+  }
+
+  public getNewTweetsDifference(startDate: Date, endDate: Date): Observable<BarChartData> {
+    return this.httpClient.get<BarChartData>('/api/data/tweets/count/today',
+      {params: {start: startDate.toISOString(), end: endDate.toISOString()}})
+      .pipe(map(data => {
+        data.date = data.date.map(x => dateTimeFormat.format(new Date(x as string)))
+        return data
+      }), tap(console.log));
+  }
+
   public getAvailableHashtags(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>('/api/data/hashtags');
   }
 
   public getTweetsCountInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<BarChartData> {
     console.log(hashtags);
-    return this.httpClient.get<BarChartData>('/api/data/tweets/count', {params: {start:
-          startDate.toISOString(),
-        end: endDate.toISOString()}}).pipe(map(data => {
+    return this.httpClient.post<BarChartData>('/api/data/tweets/count', {
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
+      tags: hashtags
+    }).pipe(map(data => {
       data.date = data.date.map(x => dateTimeFormat.format(new Date(x as string)))
       return data
     }), tap(console.log));

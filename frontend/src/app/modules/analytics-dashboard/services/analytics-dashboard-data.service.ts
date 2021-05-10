@@ -40,6 +40,14 @@ export class AnalyticsDashboardDataService {
     return this.tweetsCount.asObservable();
   }
 
+  public getNewCasesInDaysData(): Observable<BarChartData> {
+    return this.restService.getNewCasesInDays(this.startDate, this.endDate);
+  }
+
+  public getNewTweetsDifference(): Observable<BarChartData> {
+    return this.restService.getNewTweetsDifference(this.startDate, this.endDate);
+  }
+
   public getInfectionsData(): Observable<BarChartData> {
     return this.infectionsData.asObservable();
   }
