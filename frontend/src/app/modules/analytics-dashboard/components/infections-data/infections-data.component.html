@@ -1,5 +1,4 @@
 <div class="AdChart_wrapper">
-  <button mat-button >Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item *ngFor="let item of possibleDataSources" (click)="changeGraph(item)">{{item}}</button>
   </mat-menu>
