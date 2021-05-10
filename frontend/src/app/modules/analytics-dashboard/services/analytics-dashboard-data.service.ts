@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AnalyticsDashboardRestService} from "./analytics-dashboard-rest.service";
 import {Observable, Subject} from "rxjs";
-import {BarChartData} from "../model/bar-chart-data.model";
+import {AvgChartData, BarChartData, GenericChartData} from "../model/bar-chart-data.model";
 import {map, tap} from "rxjs/operators";
 
 export interface Hashtag {
@@ -13,8 +13,8 @@ export interface Hashtag {
   providedIn: 'root'
 })
 export class AnalyticsDashboardDataService {
-  private infectionsData = new Subject<BarChartData>();
-  private tweetsCount = new Subject<BarChartData>();
+  private infectionsData = new Subject<GenericChartData>();
+  private tweetsCount = new Subject<GenericChartData>();
   private dataFirstLoaded = false;
   private loadingData = new Subject<void>();
   private hashtags: Array<Hashtag> = [];
@@ -36,25 +36,31 @@ export class AnalyticsDashboardDataService {
     return this.hashtags;
   }
 
-  public getTweetsCountChartData(): Observable<BarChartData> {
-    return this.tweetsCount.asObservable();
+  public getDataByName(dataName: string): Subject<GenericChartData> {
+    if (dataName === 'tweetsCount') return this.tweetsCount;
+    if (dataName === 'infectionsCount') return this.infectionsData;
+    return new Subject<GenericChartData>();
   }
 
-  public getNewCasesInDaysData(): Observable<BarChartData> {
-    return this.restService.getNewCasesInDays(this.startDate, this.endDate);
-  }
+  // public getTweetsCountChartData(): Observable<BarChartData> {
+  //   return this.tweetsCount.asObservable();
+  // }
+  //
+  // public getNewCasesInDaysData(): Observable<BarChartData> {
+  //   return this.restService.getNewCasesInDays(this.startDate, this.endDate);
+  // }
 
-  public getNewTweetsDifference(): Observable<BarChartData> {
-    return this.restService.getNewTweetsDifference(this.startDate, this.endDate);
-  }
-
-  public getInfectionsData(): Observable<BarChartData> {
-    return this.infectionsData.asObservable();
-  }
-
-  public getTweetsInRange(): Observable<BarChartData> {
-    return this.tweetsCount.asObservable();
-  }
+  // public getNewTweetsDifference(): Observable<BarChartData> {
+  //   return this.restService.getNewTweetsDifference(this.startDate, this.endDate);
+  // }
+  //
+  // public getInfectionsData(): Observable<GenericChartData> {
+  //   return this.infectionsData.asObservable();
+  // }
+  //
+  // public getTweetsInRange(): Observable<GenericChartData> {
+  //   return this.tweetsCount.asObservable();
+  // }
 
   private getUsedHashtags(): Array<string> {
     return this.hashtags.filter(tag => tag.use).map(tag => tag.name);

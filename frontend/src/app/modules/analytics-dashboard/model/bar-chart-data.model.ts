@@ -5,3 +5,19 @@ export interface BarChartData {
   value: Array<number>;
   date: Array<Label>;
 }
+
+export interface AvgChartData extends BarChartData {
+  avg: Array<number>;
+}
+
+
+export interface GenericChartData {
+  date: Array<Label>;
+  values: Array<ChartValue>;
+}
+
+export interface ChartValue {
+  displayName: string;
+  type: string;
+  value: Array<number>;
+}

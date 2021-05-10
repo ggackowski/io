@@ -25,9 +25,9 @@ def get_infectionis():
     return jsonify({
         'date': list(df['date']),
         'values': [
-            { 'displayname': 'Active cases', 'type': 'bar', 'value': list(df['active_cases']) },
-            { 'displayname': 'Running average', 'type': 'line', 'value': list(moving_average(df['active_cases'], avg)) },
-            { 'displayname': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]) },
+            { 'displayName': 'Active cases', 'type': 'bar', 'value': list(df['active_cases']) },
+            { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['active_cases'], avg)) },
+            { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['active_cases'])[1:] - np.array(df['active_cases'])[:-1]) },
         ]
     })
 
@@ -60,9 +60,9 @@ def get_tweets():
     return jsonify({
         'date': list(df['_id']),
         'values': [
-            { 'displayname': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
-            { 'displayname': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
-            { 'displayname': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['count'])[1:] - np.array(df['count'])[:-1]) },
+            { 'displayName': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
+            { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
+#             { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(np.array(df['count'], dtype=np.int32)[1:] - np.array(df['count'], dtype=np.int32)[:-1]) }
         ]
     })
 

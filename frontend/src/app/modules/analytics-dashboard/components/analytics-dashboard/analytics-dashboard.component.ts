@@ -27,31 +27,31 @@ export class AnalyticsDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadNewCasesToday();
-    this.loadTweetsCountToday();
+    // this.loadNewCasesToday();
+    // this.loadTweetsCountToday();
   }
 
-  private loadTweetsCountToday(): void {
-    zip(this.dataService.getTweetsCountChartData()).subscribe(data => {
-      // console.log(data);
-      this.newTweetsToday = data[0].value[data[0].value.length - 1];
-      // this.dataSets = data.dataSets;
-      // this.labels = data.labels;
-      // this.dataLoaded = true;
-      this.newTweetsLoaded = true;
-    });
-  }
+  // private loadTweetsCountToday(): void {
+  //   zip(this.dataService.getTweetsCountChartData()).subscribe(data => {
+  //     // console.log(data);
+  //     this.newTweetsToday = data[0].value[data[0].value.length - 1];
+  //     // this.dataSets = data.dataSets;
+  //     // this.labels = data.labels;
+  //     // this.dataLoaded = true;
+  //     this.newTweetsLoaded = true;
+  //   });
+  // }
 
-  private loadNewCasesToday(): void {
-    zip(this.dataService.getInfectionsData(), this.dataService.getNewCasesInDaysData()).subscribe(data => {
-      // console.log(data);
-      this.newCasesToday = data[0].value[data[0].value.length - 1];
-      this.newCasesDifference = data[1].value[data[1].value.length - 1];
-      // this.dataSets = data.dataSets;
-      // this.labels = data.labels;
-      // this.dataLoaded = true;
-      this.newCasesLoaded = true;
-    });
-  }
+  // private loadNewCasesToday(): void {
+  //   zip(this.dataService.getInfectionsData(), this.dataService.getNewCasesInDaysData()).subscribe(data => {
+  //     // console.log(data);
+  //     this.newCasesToday = data[0].value[data[0].value.length - 1];
+  //     this.newCasesDifference = data[1].value[data[1].value.length - 1];
+  //     // this.dataSets = data.dataSets;
+  //     // this.labels = data.labels;
+  //     // this.dataLoaded = true;
+  //     this.newCasesLoaded = true;
+  //   });
+  // }
 
 }
