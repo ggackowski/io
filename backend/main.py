@@ -14,11 +14,11 @@ def moving_average(data_set, periods=3):
     weights = np.ones(periods) / periods
     return np.convolve(data_set, weights, mode='valid')
 
-@app.route('/api/data/active_cases')
+@app.route('/api/data/active_cases', methods=['POST'])
 def get_infectionis():
-    start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
-    end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
-    avg = int(request.args.get('avg', 3))
+    start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
+    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    avg = int(request.json.get('avg', 3))
 
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
