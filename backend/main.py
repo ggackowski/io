@@ -10,16 +10,22 @@ client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?re
 db = client.io
 app = Flask(__name__)
 
+def moving_average(data_set, periods=3):
+    weights = np.ones(periods) / periods
+    return np.convolve(data_set, weights, mode='valid')
+
 @app.route('/api/data/active_cases')
 def get_infectionis():
     start = datetime.fromisoformat(request.args.get('start').replace("Z", ""))
     end = datetime.fromisoformat(request.args.get('end').replace("Z", ""))
+    avg = int(request.args.get('avg', 3))
 
     df = pd.DataFrame(db.populationData.find({ "date": { "$gte": start, "$lte": end } }))
 
     return jsonify({
         'date': list(df['date']),
-        'value': list(df['active_cases'])
+        'value': list(df['active_cases']),
+        'avg': list(moving_average(df['active_cases'], avg))
     })
 
 @app.route('/api/data/active_cases/today')
@@ -42,6 +48,7 @@ def get_hashtags():
 def get_tweets():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    avg = int(request.json.get('avg', 3))
     tags = request.json['tags']
 
     if tags:
@@ -61,7 +68,8 @@ def get_tweets():
 
     return jsonify({
         'date': list(df['_id']),
-        'value': list(df['count'])
+        'value': list(df['count']),
+        'avg': list(moving_average(df['count'], avg))
     })
 
 @app.route('/api/data/tweets/count', methods=['POST'])
