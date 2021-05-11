@@ -65,6 +65,7 @@ def download_tweets_until(date, criteria=None):
             date_to_download = criteriaStatus["dateFrom"]
             while date_to_download <= date:
                 download_daily_tweets(date_to_download, criteriaStatus)
+                date_to_download += timedelta(days=1)
 
 
 def download_daily_tweets(date, criteria=None):
