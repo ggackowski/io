@@ -38,7 +38,7 @@ def get_infectionis():
     })
 
 @app.route('/api/data/deaths', methods=['POST'])
-def get_infectionis():
+def get_deaths():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     avg = int(request.json.get('avg', 3))
@@ -61,7 +61,7 @@ def get_infectionis():
     })
 
 @app.route('/api/data/quarantine', methods=['POST'])
-def get_infectionis():
+def get_quarantine():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     avg = int(request.json.get('avg', 3))
@@ -84,7 +84,7 @@ def get_infectionis():
     })
 
 @app.route('/api/data/intense', methods=['POST'])
-def get_infectionis():
+def get_intense():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     avg = int(request.json.get('avg', 3))
@@ -107,7 +107,7 @@ def get_infectionis():
     })
 
 @app.route('/api/data/vaccinated', methods=['POST'])
-def get_infectionis():
+def get_vaccinated():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     avg = int(request.json.get('avg', 3))
@@ -130,7 +130,7 @@ def get_infectionis():
     })
 
 @app.route('/api/data/cured', methods=['POST'])
-def get_infectionis():
+def get_cured():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     avg = int(request.json.get('avg', 3))
