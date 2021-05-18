@@ -72,9 +72,7 @@ def get_tweets():
     avg = int(request.json.get('avg', 3))
     tags = request.json['tags']
 
-    query = [
-        {"$match": {"date" : {"$gte": start, "$lte": end}}},
-    ]
+    query = [{"$match": {"date" : {"$gte": start, "$lte": end}}}]
     if tags:
         query += [
             {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "date": True}},
@@ -108,9 +106,7 @@ def get_top_users():
     end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
     tags = request.json['tags']
 
-    query = [
-        {"$match" : {"date" : {"$gte": start, "$lte": end }}},
-    ]
+    query = [{"$match" : {"date" : {"$gte": start, "$lte": end }}}]
     if tags:
         query += [
             {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "username": True}},
@@ -127,6 +123,30 @@ def get_top_users():
         'value': list(df['count'])
     })
 
+
+@app.route('/api/data/tags/top', methods=['POST'])
+def get_top_tags():
+    start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
+    end = datetime.fromisoformat(request.json['end'].replace("Z", ""))
+    tags = request.json['tags']
+
+    query = [{"$match" : {"date" : {"$gte": start, "$lte": end }}}]
+    if tags:
+        query += [
+            {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "username": True}},
+            {"$match"  : {"tags" : {"$ne": 0}}},
+        ]
+    query += [
+        {"$unwind": "$hashtags" },
+        {"$group" : {"_id": "$hashtags", "count": {"$sum": 1}} },
+        {"$sort"  : {"count" : -1}}
+    ]
+
+    df = pd.DataFrame(db.tweets.aggregate(query))
+    return jsonify({ 
+        'username': list(df['_id']),
+        'value': list(df['count'])
+    })
 
 hashtags = []
 with open('./twint_criteria.json') as file:
