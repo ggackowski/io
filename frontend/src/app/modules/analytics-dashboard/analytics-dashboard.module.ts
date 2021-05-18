@@ -18,6 +18,8 @@ import { InfectionsDataComponent } from './components/infections-data/infections
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { TweetsCountComponent } from './components/tweets-count/tweets-count.component';
+import { TopDataComponent } from './components/top-data/top-data.component';
+import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 
 const routes: Routes = [
   {
@@ -31,28 +33,30 @@ const routes: Routes = [
     AnalyticsDashboardComponent,
     OptionsMenuComponent,
     InfectionsDataComponent,
-    TweetsCountComponent
+    TweetsCountComponent,
+    TopDataComponent
   ],
   providers: [
     MatDatepickerModule
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    SimpleBarChartModule,
-    MatCardModule,
-    MatDividerModule,
-    MatButtonModule,
-    FontAwesomeModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    OverlayModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        SimpleBarChartModule,
+        MatCardModule,
+        MatDividerModule,
+        MatButtonModule,
+        FontAwesomeModule,
+        MatMenuModule,
+        MatCheckboxModule,
+        OverlayModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        FormsModule,
+        NgxDatatableModule
+    ]
 })
 export class AnalyticsDashboardModule { }

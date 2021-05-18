@@ -11,7 +11,7 @@ import {zip} from "rxjs";
   styleUrls: ['./analytics-dashboard.component.scss']
 })
 export class AnalyticsDashboardComponent implements OnInit {
-  public newCasesToday: number = 1233;
+  public newCasesToday: number = 3098;
   public newTweetsToday: number = 123;
   public newCasesDifference: number = -230;
   public newTweetsDifference: number = 0;

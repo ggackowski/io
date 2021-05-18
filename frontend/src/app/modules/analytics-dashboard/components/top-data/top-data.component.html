@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <p class="title">Top users</p>
+  <div>
+    <input
+      type="text"
+      style="margin-left:40px; margin-top:20px; padding:8px;width:30%;"
+      placeholder="Type to filter the name column..."
+      (keyup)="updateFilter($event)"
+    />
+    <ngx-datatable
+      class="material"
+      [rows]="rows"
+      [loadingIndicator]="loadingIndicator"
+      [columns]="columns"
+      [columnMode]="ColumnMode.force"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      rowHeight="auto"
+      [reorderable]="reorderable"
+    >
+    </ngx-datatable>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+@import "src/colors";
+
+.wrapper {
+  //margin: 10px;
+  position: relative;
+  //      width: 700px;
+  height: 450px;
+  background-color: $grayWhite;
+  border-radius: 5px;
+  border: 1px solid $mainColor;
+}
+
+.title {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 20px;
+  color: $mainColor;
+}
+
+
+.material {
+  margin: 40px;
+}
