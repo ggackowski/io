@@ -14,8 +14,8 @@ import {filter} from "rxjs/operators";
 })
 export class InfectionsDataComponent implements OnInit {
   public possibleDataSources = [
-    'infectionsCount', 
-    'tweetsCount', 
+    'infectionsCount',
+    'tweetsCount',
     'deathsCount',
     'quarantine',
     'intense',
@@ -31,6 +31,7 @@ export class InfectionsDataComponent implements OnInit {
   public max: number = 0;
   public mean: number = 0;
   public std: number = 0;
+  public selectedSource = 'infectionsCount';
 
   constructor(
     private analyticsDashboardDataService: AnalyticsDashboardDataService
@@ -44,7 +45,8 @@ export class InfectionsDataComponent implements OnInit {
   }
 
   public changeGraph(name: string): void {
-      this.data = this.analyticsDashboardDataService.getDataByName(name);
+    this.selectedSource = name;
+    this.data = this.analyticsDashboardDataService.getDataByName(name);
       this.dataLoaded = false;
       this.updateChartData(this.data.getValue());
   }
@@ -62,7 +64,7 @@ export class InfectionsDataComponent implements OnInit {
   }
 
   private updateChartData(data: GenericChartData): void {
-    console.log('get');
+    console.log('get', data);
     this.labels.length = 0;
     this.dataSets.length = 0;
     const temp: ChartDataSets[] | { label: string; type: string; data: number[]; }[] = [];

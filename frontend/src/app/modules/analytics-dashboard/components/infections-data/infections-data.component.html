@@ -3,7 +3,7 @@
     <button mat-menu-item *ngFor="let item of possibleDataSources" (click)="changeGraph(item)">{{item}}</button>
   </mat-menu>
   <div *ngIf="dataLoaded">
-    <p class="AdChart_chartTitle">Infections data</p>
+    <p class="AdChart_chartTitle">{{selectedSource}}</p>
     <fa-icon class="AdChart_settingsIcon" [matMenuTriggerFor]="menu" [icon]="cogIcon"></fa-icon>
     <div class="AdChart_stats">
       <app-simple-bar-chart
