@@ -72,33 +72,33 @@ def get_tweets():
     avg = int(request.json.get('avg', 3))
     tags = request.json['tags']
 
+    query = [
+        {"$match": {"date" : {"$gte": start, "$lte": end}}},
+    ]
     if tags:
-        df = pd.DataFrame(db.tweets.aggregate([
-            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
-            { "$project": { "tags": {"$size": {"$setIntersection": ["$hashtags", hashtags] }}, "date": True}},
-            { "$match" : { "tags" : { "$ne": 0 } } },
-            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
-            { "$sort" : { "_id" : 1 } }
-        ]))
-    else:
-        df = pd.DataFrame(db.tweets.aggregate([
-            { "$match" : { "date" : { "$gte": start, "$lte": end } } },
-            { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
-            { "$sort" : { "_id" : 1 } }
-        ]))
+        query += [
+            {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "date": True}},
+            {"$match": {"tags" : {"$ne": 0}}},
+        ]
+    query += [
+        { "$group": { "_id": "$date", "count": { "$sum": 1 } } },
+        { "$sort" : { "_id" : 1 } }
+    ]
+    df = pd.DataFrame(db.tweets.aggregate(query))
+    data = df['count']
 
     return jsonify({
         'date': list(df['_id']),
         'values': [
-            { 'displayName': 'Tweet count', 'type': 'bar', 'value': list(df['count']) },
-            { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(df['count'], avg)) },
-            { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(map(int, np.array(df['count'])[1:] - np.array(df['count'])[:-1])) }
+            { 'displayName': 'Tweet count', 'type': 'bar', 'value': list(data) },
+            { 'displayName': 'Running average', 'type': 'line', 'value': list(moving_average(data, avg)) },
+            { 'displayName': 'Daily difference', 'type': 'bar', 'value': [0] + list(map(int, np.array(data)[1:] - np.array(data)[:-1])) }
         ],
         'stats': [
-            { 'displayName': 'Mean', 'value': int(np.mean(df['count'])) },
-            { 'displayName': 'Min', 'value': int(np.min(df['count'])) },
-            { 'displayName': 'Max', 'value': int(np.max(df['count'])) },
-            { 'displayName': 'Std', 'value': int(np.std(df['count'])) },
+            { 'displayName': 'Mean', 'value': int(np.mean(data)) },
+            { 'displayName': 'Min', 'value': int(np.min(data)) },
+            { 'displayName': 'Max', 'value': int(np.max(data)) },
+            { 'displayName': 'Std', 'value': int(np.std(data)) },
         ]
     })
 
