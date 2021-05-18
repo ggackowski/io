@@ -109,18 +109,27 @@ def get_top_users():
     query = [{"$match" : {"date" : {"$gte": start, "$lte": end }}}]
     if tags:
         query += [
-            {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "username": True}},
+            {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "username": True, "likes_count": True, "replies_count": True, "retweets_count": True}},
             {"$match"  : {"tags" : {"$ne": 0}}},
         ]
     query += [
-        {"$group"  : {"_id": "$username", "count": {"$sum": 1}}},
+        {"$group" : {
+            "_id": "$username", 
+            "count": {"$sum": 1}, 
+            "likes": {"$sum": "likes_count"},
+            "replies": {"$sum": "replies_count"},
+            "retweets": {"$sum": "retweets_count"},
+        }},
         {"$sort"   : {"count" : -1}}
     ]
 
     df = pd.DataFrame(db.tweets.aggregate(query))
-    return jsonify({ 
+    return jsonify({
         'username': list(df['_id']),
-        'value': list(df['count'])
+        'count': list(df['count']),
+        'likes': list(df['likes']),
+        'replies': list(df['replies']),
+        'retweets': list(df['retweets'])
     })
 
 
