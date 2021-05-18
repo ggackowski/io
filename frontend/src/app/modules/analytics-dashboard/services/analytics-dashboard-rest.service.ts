@@ -14,22 +14,6 @@ export class AnalyticsDashboardRestService {
     private httpClient: HttpClient
   ) { }
 
-  // public getTweetsCountChartData(): Observable<BarChartData> {
-  //   return this.httpClient.get<BarChartData>('/api/data/infections', {}).pipe(tap(console.log));
-  // }
-
-  public getNewCasesInDays(startDate: Date, endDate: Date): Observable<BarChartData> {
-    return this.httpClient.get<BarChartData>('/api/data/active_cases/today',
-      {params: {start: startDate.toISOString(), end: endDate.toISOString()}})
-      .pipe(map(data => this.mapData(data)));
-  }
-
-  public getNewTweetsDifference(startDate: Date, endDate: Date): Observable<BarChartData> {
-    return this.httpClient.get<BarChartData>('/api/data/tweets/count/today',
-      {params: {start: startDate.toISOString(), end: endDate.toISOString()}})
-      .pipe(map(data => this.mapData(data)));
-  }
-
   public getAvailableHashtags(): Observable<Array<string>> {
     return this.httpClient.get<Array<string>>('/api/data/hashtags');
   }
@@ -45,6 +29,24 @@ export class AnalyticsDashboardRestService {
 
   public getInfectionsDataInRange(startDate: Date, endDate: Date): Observable<GenericChartData> {
     return this.httpClient.post<GenericChartData>('/api/data/active_cases',
+      {
+        start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          avg: '7'
+      }).pipe(map(data => this.mapData(data)));
+  }
+
+  public getDeathsDataInRange(startDate: Date, endDate: Date): Observable<GenericChartData> {
+    return this.httpClient.post<GenericChartData>('/api/data/deaths',
+      {
+        start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          avg: '7'
+      }).pipe(map(data => this.mapData(data)));
+  }
+
+  public getDataInRange(endpoint: string, startDate: Date, endDate: Date): Observable<GenericChartData> {
+    return this.httpClient.post<GenericChartData>(endpoint,
       {
         start: startDate.toISOString(),
           end: endDate.toISOString(),

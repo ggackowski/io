@@ -17,6 +17,16 @@ export class AnalyticsDashboardDataService {
   // @ts-ignore
   private infectionsData = new BehaviorSubject<GenericChartData>(null);
   // @ts-ignore
+  private deathsData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private quarantineData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private intenseData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private vaccinatedData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private curedData = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
   private tweetsCount = new BehaviorSubject<GenericChartData>(null);
   private dataFirstLoaded = false;
   private loadingData = new Subject<void>();
@@ -46,29 +56,14 @@ export class AnalyticsDashboardDataService {
   public getDataByName(dataName: string): BehaviorSubject<GenericChartData> {
     if (dataName === 'tweetsCount') return this.tweetsCount;
     if (dataName === 'infectionsCount') return this.infectionsData;
+    if (dataName === 'deathsCount') return this.deathsData;
+    if (dataName === 'quarantine') return this.quarantineData;
+    if (dataName === 'intense') return this.intenseData;
+    if (dataName === 'vaccinated') return this.vaccinatedData;
+    if (dataName === 'cured') return this.curedData;
     // @ts-ignore
     return new BehaviorSubject<GenericChartData>(null);
   }
-
-  // public getTweetsCountChartData(): Observable<BarChartData> {
-  //   return this.tweetsCount.asObservable();
-  // }
-  //
-  // public getNewCasesInDaysData(): Observable<BarChartData> {
-  //   return this.restService.getNewCasesInDays(this.startDate, this.endDate);
-  // }
-
-  // public getNewTweetsDifference(): Observable<BarChartData> {
-  //   return this.restService.getNewTweetsDifference(this.startDate, this.endDate);
-  // }
-  //
-  // public getInfectionsData(): Observable<GenericChartData> {
-  //   return this.infectionsData.asObservable();
-  // }
-  //
-  // public getTweetsInRange(): Observable<GenericChartData> {
-  //   return this.tweetsCount.asObservable();
-  // }
 
   private getUsedHashtags(): Array<string> {
     return this.hashtags.filter(tag => tag.use).map(tag => tag.name);
@@ -91,6 +86,16 @@ export class AnalyticsDashboardDataService {
     this.restService.getTweetsCountInRange(this.startDate, this.endDate, this.getUsedHashtags()).subscribe(
       data => this.tweetsCount.next(data)
     );
+    this.restService.getDataInRange('/api/data/deaths', this.startDate, this.endDate)
+      .subscribe(data => { this.deathsData.next(data) })
+    this.restService.getDataInRange('/api/data/quarantine', this.startDate, this.endDate)
+      .subscribe(data => { this.quarantineData.next(data) })
+    this.restService.getDataInRange('/api/data/intense', this.startDate, this.endDate)
+      .subscribe(data => { this.intenseData.next(data) })
+    this.restService.getDataInRange('/api/data/vaccinated', this.startDate, this.endDate)
+      .subscribe(data => { this.vaccinatedData.next(data) })
+    this.restService.getDataInRange('/api/data/cured', this.startDate, this.endDate)
+      .subscribe(data => { this.curedData.next(data) })
   }
 
   private setDefaultDataRange(): void {

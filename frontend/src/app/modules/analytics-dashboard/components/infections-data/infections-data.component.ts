@@ -14,7 +14,13 @@ import {filter} from "rxjs/operators";
 })
 export class InfectionsDataComponent implements OnInit {
   public possibleDataSources = [
-    'infectionsCount', 'tweetsCount'
+    'infectionsCount', 
+    'tweetsCount', 
+    'deathsCount',
+    'quarantine',
+    'intense',
+    'vaccinated',
+    'cured'
   ];
   public data: BehaviorSubject<GenericChartData>;
   public dataSets: Array<ChartDataSets> = [];

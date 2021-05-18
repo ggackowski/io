@@ -55,11 +55,11 @@ def get_intense():
 
 @app.route('/api/data/vaccinated', methods=['POST'])
 def get_vaccinated():
-    return jsonify(get_simpledata(request, 'dataSource_szczepienia.', 'vaccinated'))
+    return jsonify(get_simpledata(request, 'dataSource_szczepienia', 'vaccinated'))
 
 @app.route('/api/data/cured', methods=['POST'])
 def get_cured():
-    return jsonify(get_simpledata(request, 'populationData.', 'cured'))
+    return jsonify(get_simpledata(request, 'populationData', 'cured'))
 
 @app.route('/api/data/hashtags')
 def get_hashtags():
