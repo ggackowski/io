@@ -33,7 +33,7 @@ CORRELATION_MAPPING: Dict[str, Callable[[np.ndarray, np.ndarray], float]] = {
 
 
 def str_to_date(date: str):
-    return datetime.strptime(date, '%d.%m.%Y')
+    return datetime.fromisoformat(date.replace("Z", ""))
 
 
 def get_data_for_range(start_date, end_date, data_type: str) -> List[Union[int, float]]:
@@ -52,8 +52,9 @@ def get_statistics_for_range(start_date: str, end_date: str, data_type: str, sta
 def get_correlation_for_range(
     start_date: str, end_date: str, data1: str, data2: str, correlation: str
     ) -> Dict[str, float]:
-
+    
     try:
+        
         result = CORRELATION_MAPPING[correlation](
             get_data_for_range(start_date, end_date, data1),
             get_data_for_range(start_date, end_date, data2)
