@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, make_response
 from pymongo import MongoClient
 from datetime import datetime, timedelta
+from statistics_calculation import get_correlation_for_range
+
 import pandas as pd
 import numpy as np
 import json
@@ -60,6 +62,15 @@ def get_vaccinated():
 @app.route('/api/data/cured', methods=['POST'])
 def get_cured():
     return jsonify(get_simpledata(request, 'populationData', 'cured'))
+
+@app.route('/api/data/<first_statistic>/correlation', methods=['POST'])
+def get_correlation(first_statistic):
+    start_date = request.json['start']
+    end_date = request.json['end']
+    second_statistic = request.json['second']
+    correlation = request.json['correlation']
+
+    return jsonify(get_correlation_for_range(start_date, end_date, first_statistic, second_statistic, correlation))
 
 @app.route('/api/data/hashtags')
 def get_hashtags():
