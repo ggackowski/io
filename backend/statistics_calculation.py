@@ -1,6 +1,7 @@
 from datetime import datetime
 from pymongo import MongoClient
 from typing import List, Union, Callable, Dict
+from scipy.stats import *
 import numpy as np
 
 client = MongoClient("mongodb+srv://admin:admin@cluster0.kvxff.mongodb.net/io?retryWrites=true&w=majority")
@@ -24,6 +25,12 @@ STATISTIC_MAPPING: Dict[str, Callable[[List[Union[int, float]]], any]] = {
     "maximal_value": np.max,
 }
 
+CORRELATION_MAPPING: Dict[str, Callable[[np.ndarray, np.ndarray], float]] = {
+    "Kendall": kendalltau,
+    "Pearson": pearsonr,
+    "Spearman": spearmanr
+}
+
 
 def str_to_date(date: str):
     return datetime.strptime(date, '%d.%m.%Y')
@@ -38,5 +45,23 @@ def get_data_for_range(start_date, end_date, data_type: str) -> List[Union[int, 
 def get_statistics_for_range(start_date: str, end_date: str, data_type: str, statistic: str) -> any:
     try:
         return STATISTIC_MAPPING[statistic](get_data_for_range(start_date, end_date, data_type))
+    except ValueError:
+        return None
+
+
+def get_correlation_for_range(
+    start_date: str, end_date: str, data1: str, data2: str, correlation: str
+    ) -> Dict[str, float]:
+
+    try:
+        result = CORRELATION_MAPPING[correlation](
+            get_data_for_range(start_date, end_date, data1),
+            get_data_for_range(start_date, end_date, data2)
+        )
+
+        if isinstance(result, tuple):
+            return {'correlation': result[0], 'p-value': result[1]}
+        return {'correlation': result.correlation, 'p-value': result.pvalue}
+
     except ValueError:
         return None
