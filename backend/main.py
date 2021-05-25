@@ -135,14 +135,16 @@ def get_top_users():
     ]
 
     df = pd.DataFrame(db.tweets.aggregate(query))
-    return jsonify({
-        'username': list(df['_id']),
-        'count': list(df['count']),
-        'likes': list(df['likes']),
-        'replies': list(df['replies']),
-        'retweets': list(df['retweets'])
-    })
 
+    return jsonify([
+        { 
+            'Username': data[0],
+            'Count': data[1],
+            'Likes': data[2],
+            'Replies': data[3],
+            'Retweets': data[4]
+        } for data in zip(df['_id'], df['count'], df['likes'], df['replies'], df['retweets'])
+    ])
 
 @app.route('/api/data/tags/top', methods=['POST'])
 def get_top_tags():
@@ -152,13 +154,13 @@ def get_top_tags():
 
     query = [{"$match" : {"date" : {"$gte": start, "$lte": end }}}]
     if tags:
-        query += [
-            {"$project": {"tags": {"$size": {"$setIntersection": ["$hashtags", tags] }}, "username": True}},
-            {"$match"  : {"tags" : {"$ne": 0}}},
-        ]
+        query += [{"$project": {"tags": {"$setIntersection": ["$hashtags", tags] }}}]
+    else:
+        query += [{"$project": {"tags": "$hashtags" }}]
+
     query += [
-        {"$unwind": "$hashtags" },
-        {"$group" : {"_id": "$hashtags", "count": {"$sum": 1}} },
+        {"$unwind": "$tags" },
+        {"$group" : {"_id": "$tags", "count": {"$sum": 1}} },
         {"$sort"  : {"count" : -1}}
     ]
 
