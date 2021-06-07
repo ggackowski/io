@@ -127,11 +127,12 @@ def get_top_users():
         {"$group" : {
             "_id": "$username", 
             "count": {"$sum": 1}, 
-            "likes": {"$sum": "likes_count"},
-            "replies": {"$sum": "replies_count"},
-            "retweets": {"$sum": "retweets_count"},
+            "likes": {"$sum": "$likes_count"},
+            "replies": {"$sum": "$replies_count"},
+            "retweets": {"$sum": "$retweets_count"},
         }},
-        {"$sort"   : {"count" : -1}}
+        {"$sort"   : {"count" : -1}},
+        {"$limit": 20}
     ]
 
     df = pd.DataFrame(db.tweets.aggregate(query))
