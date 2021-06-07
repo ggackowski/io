@@ -51,6 +51,19 @@ def get_statistics_for_range(start_date: str, end_date: str, data_type: str, sta
         return None
 
 
+def format_correlation_result(result, id1, id2):
+    if isinstance(result, tuple):
+        result =  {'correlation': result[0], 'p_value': result[1]}
+    else: 
+        result =  {'correlation': result.correlation, 'p_value': result.pvalue}
+
+    if np.nan in list(result.values()) and id1 == id2:
+        result = {'correlation': 1.0, 'p_value': 0.0}
+    elif np.nan in list(result.values()):
+        result = None
+    return result
+
+
 def get_correlation_for_range(
     start_date: str, end_date: str, data1: str, data2: str, correlation: str
     ) -> Dict[str, float]:
@@ -59,9 +72,8 @@ def get_correlation_for_range(
             get_data_for_range(start_date, end_date, data1),
             get_data_for_range(start_date, end_date, data2)
         )
-        if isinstance(result, tuple):
-            return {'correlation': result[0], 'p_value': result[1]}
-        return {'correlation': result.correlation, 'p_value': result.pvalue}
+
+        return format_correlation_result(result, data1, data2)
     except ValueError:
         return None
 
@@ -69,17 +81,7 @@ def get_correlation_for_matrix(data1, data2, correlation, idx1, idx2):
     try:
         result = CORRELATION_MAPPING[correlation](data1, data2)
 
-        if isinstance(result, tuple):
-            result =  {'correlation': result[0], 'p_value': result[1]}
-        else: 
-            result =  {'correlation': result.correlation, 'p_value': result.pvalue}
-
-        if np.nan in list(result.values()) and idx1 == idx2:
-            result = {'correlation': 1.0, 'p_value': 0.0}
-        elif np.nan in list(result.values()):
-            result = None
-        return result
-
+        return format_correlation_result(result, idx1, idx2)
     except ValueError:
         return None
 
