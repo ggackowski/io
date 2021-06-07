@@ -60,18 +60,25 @@ def get_correlation_for_range(
             get_data_for_range(start_date, end_date, data2)
         )
         if isinstance(result, tuple):
-            return {'correlation': result[0], 'p-value': result[1]}
-        return {'correlation': result.correlation, 'p-value': result.pvalue}
+            return {'correlation': result[0], 'p_value': result[1]}
+        return {'correlation': result.correlation, 'p_value': result.pvalue}
     except ValueError:
         return None
 
-def get_correlation_raw_data(data1, data2, correlation):
+def get_correlation_for_matrix(data1, data2, correlation, idx1, idx2):
     try:
         result = CORRELATION_MAPPING[correlation](data1, data2)
 
         if isinstance(result, tuple):
-            return {'correlation': result[0], 'p-value': result[1]}
-        return {'correlation': result.correlation, 'p-value': result.pvalue}
+            result =  {'correlation': result[0], 'p_value': result[1]}
+        else: 
+            result =  {'correlation': result.correlation, 'p_value': result.pvalue}
+
+        if np.nan in list(result.values()) and idx1 == idx2:
+            result = {'correlation': 1.0, 'p_value': 0.0}
+        elif np.nan in list(result.values()):
+            result = None
+        return result
 
     except ValueError:
         return None
@@ -79,5 +86,8 @@ def get_correlation_raw_data(data1, data2, correlation):
 def correlation_matrix(start_date: str, end_date: str, correlation: str) -> Dict[str, List[any]]:
     idx_map = list(COLLECTION_MAPPING.keys())
     data = [get_data_for_range(start_date, end_date, statistic) for statistic in idx_map]
-    mat = [[get_correlation_raw_data(data1, data2, correlation) for data2 in data] for data1 in data]
+    mat = [[get_correlation_for_matrix(data1, data2, correlation, idx1, idx2) 
+        for idx2, data2 in enumerate(data)] 
+        for idx1, data1 in enumerate(data)]
+
     return {"index_mapping": idx_map, "correlation_matrix": mat}
