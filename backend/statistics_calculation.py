@@ -15,6 +15,8 @@ COLLECTION_MAPPING: Dict[str, str] = {
     "used_life_saving_kit": "respiratoryData",
     "vaccinated": "dataSource_szczepienia",
     "total_vaccinated": "dataSource_szczepienia",
+    "cases": "dataSource_przyrost",
+    "life_saving_kit": "respiratoryData"
 }
 
 
@@ -52,13 +54,20 @@ def get_statistics_for_range(start_date: str, end_date: str, data_type: str, sta
 def get_correlation_for_range(
     start_date: str, end_date: str, data1: str, data2: str, correlation: str
     ) -> Dict[str, float]:
-    
     try:
-        
         result = CORRELATION_MAPPING[correlation](
             get_data_for_range(start_date, end_date, data1),
             get_data_for_range(start_date, end_date, data2)
         )
+        if isinstance(result, tuple):
+            return {'correlation': result[0], 'p-value': result[1]}
+        return {'correlation': result.correlation, 'p-value': result.pvalue}
+    except ValueError:
+        return None
+
+def get_correlation_raw_data(data1, data2, correlation):
+    try:
+        result = CORRELATION_MAPPING[correlation](data1, data2)
 
         if isinstance(result, tuple):
             return {'correlation': result[0], 'p-value': result[1]}
@@ -66,3 +75,9 @@ def get_correlation_for_range(
 
     except ValueError:
         return None
+
+def correlation_matrix(start_date: str, end_date: str, correlation: str) -> Dict[str, List[any]]:
+    idx_map = list(COLLECTION_MAPPING.keys())
+    data = [get_data_for_range(start_date, end_date, statistic) for statistic in idx_map]
+    mat = [[get_correlation_raw_data(data1, data2, correlation) for data2 in data] for data1 in data]
+    return {"index_mapping": idx_map, "correlation_matrix": mat}
