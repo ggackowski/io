@@ -11,6 +11,11 @@ const routes: Routes = [
     path: 'analyticsDashboard',
     loadChildren: () => import('../analytics-dashboard/analytics-dashboard.module')
       .then(m => m.AnalyticsDashboardModule)
+  },
+  {
+    path: 'correlations',
+    loadChildren: () => import('../correlations/correlations.module')
+      .then(m => m.CorrelationsModule)
   }
 ];
 

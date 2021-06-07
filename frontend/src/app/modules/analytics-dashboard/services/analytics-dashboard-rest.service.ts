@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {AvgChartData, BarChartData, GenericChartData} from "../model/bar-chart-data.model";
 import {delay, map, tap} from "rxjs/operators";
+import {TopData} from "../model/top-data.model";
+
 const dateTimeFormat =  new Intl.DateTimeFormat()
 
 @Injectable({
@@ -19,7 +21,6 @@ export class AnalyticsDashboardRestService {
   }
 
   public getTweetsCountInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<GenericChartData> {
-    console.log(hashtags);
     return this.httpClient.post<GenericChartData>('/api/data/tweets/count', {
       start: startDate.toISOString(),
       end: endDate.toISOString(),
@@ -37,17 +38,23 @@ export class AnalyticsDashboardRestService {
   }
 
   public getDeathsDataInRange(startDate: Date, endDate: Date): Observable<GenericChartData> {
-    return this.httpClient.post<GenericChartData>('/api/data/deaths',
-      {
+    return this.httpClient.post<GenericChartData>('/api/data/deaths', {
         start: startDate.toISOString(),
           end: endDate.toISOString(),
           avg: '7'
       }).pipe(map(data => this.mapData(data)));
   }
 
+  public getTopDataInRange(startDate: Date, endDate: Date, hashtags: Array<string>): Observable<Array<TopData>> {
+    return this.httpClient.post<Array<TopData>>('/api/data/users/top', {
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
+      tags: hashtags
+    });
+  }
+
   public getDataInRange(endpoint: string, startDate: Date, endDate: Date): Observable<GenericChartData> {
-    return this.httpClient.post<GenericChartData>(endpoint,
-      {
+    return this.httpClient.post<GenericChartData>(endpoint, {
         start: startDate.toISOString(),
           end: endDate.toISOString(),
           avg: '7'
@@ -55,7 +62,8 @@ export class AnalyticsDashboardRestService {
   }
 
   private mapData(data: any): any {
-    data.date = data.date.map((x: any) => dateTimeFormat.format(new Date(x as string)))
+    data.date = data.date.map((x: any) => dateTimeFormat.format(new Date(x as string)));
+    console.log(data);
     return data
   }
 }

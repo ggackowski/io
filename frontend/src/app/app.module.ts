@@ -8,10 +8,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {TopNavModule} from "./modules/top-nav/top-nav.module";
 import {HttpClientModule} from "@angular/common/http";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CorrelationsComponent } from './modules/correlations/components/correlations/correlations.component';
+import {MatDividerModule} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -20,7 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NgbModule,
     TopNavModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
