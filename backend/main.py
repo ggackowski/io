@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, make_response
 from pymongo import MongoClient
 from datetime import datetime, timedelta
-from statistics_calculation import get_correlation_for_range
+from statistics_calculation import get_correlation_for_range, correlation_matrix
 
 import pandas as pd
 import numpy as np
@@ -76,6 +76,14 @@ def get_correlation(first_statistic):
 def get_hashtags():
     return jsonify(hashtags)
 
+@app.route('/api/data/correlation_matrix', methods=['POST'])
+def get_correlation_matrix():
+    start_date = request.json['start']
+    end_date = request.json['end']
+    correlation = request.json['correlation']
+
+    return correlation_matrix(start_date, end_date, correlation)
+    
 @app.route('/api/data/tweets/count', methods=['POST'])
 def get_tweets():
     start = datetime.fromisoformat(request.json['start'].replace("Z", ""))
