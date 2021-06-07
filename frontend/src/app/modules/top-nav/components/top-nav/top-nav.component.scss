@@ -37,18 +37,29 @@
 
       &:hover {
         cursor: pointer;
+        //color: $grayWhite;
+        //background-color: $secondaryColor;
+        //border: 1px solid $secondaryColor;
+        //border-radius: 10px;
+      }
+
+      &:hover {
+
       }
     }
+     li:focus {
+      outline: 0;
+
+    }
+
+    //li:visited { outline: none; }
 
     &_selected {
       border: 1px solid $secondaryColor;
       color: $secondaryColor;
       border-radius: 10px;
 
-      &:hover {
-        color: $grayWhite;
-        background-color: $secondaryColor;
-      }
+
     }
   }
 }

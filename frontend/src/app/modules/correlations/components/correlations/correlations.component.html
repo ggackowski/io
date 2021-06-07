@@ -1,0 +1,49 @@
+<div class="row m-md-4 Ad_background">
+  <div class="col mb-md-5">
+    <div class="row">
+      <div class="col">
+        <h1 class="Ad_titleBanner">Correlations</h1>
+        <mat-divider></mat-divider>
+        <div>
+          Correlation type<br>
+           <br>
+          <mat-select style="width: 300px" [formControl]="correlationType">
+            <mat-option value="Spearman">Spearman</mat-option>
+          </mat-select>
+          <br>
+          <mat-form-field appearance="outline">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="dataRange" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+          <button mat-raised-button (click)="showCorrelations()">Show</button>
+        </div>
+        <div *ngIf="loaded">
+          <table>
+          <tr>
+            <td></td>
+            <td *ngFor="let k of correlation.index_mapping">{{k}}</td>
+          </tr>
+          <tr *ngFor="let col of correlation.correlation_matrix;let i = index">
+            <td>{{correlation.index_mapping[i]}}</td>
+            <td *ngFor="let element of col; let j = index">
+              <div *ngIf="element">
+                {{element.correlation.toFixed(5)}}
+                <br>
+                {{element.pValue}}
+              </div>
+              <div *ngIf="!element">
+                -
+              </div>
+            </td>
+          </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

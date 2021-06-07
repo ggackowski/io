@@ -4,7 +4,8 @@
   </div>
   <div class="col-lg-10">
     <ul class="topNav_menu">
-      <li routerLink="/analyticsDashboard" class="topNav_menu_item topNav_menu_selected">Analytics Dashboard</li>
+      <li routerLink="/analyticsDashboard" [routerLinkActive]="['topNav_menu_selected']" class="topNav_menu_item  mr-3">Analytics Dashboard</li>
+      <li routerLink="/correlations" [routerLinkActive]="['topNav_menu_selected']" class="topNav_menu_item  mr-3">Correlations</li>
     </ul>
   </div>
 </div>

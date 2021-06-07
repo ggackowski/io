@@ -3,6 +3,7 @@ import {AnalyticsDashboardRestService} from "./analytics-dashboard-rest.service"
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {AvgChartData, BarChartData, GenericChartData} from "../model/bar-chart-data.model";
 import {filter, map, tap} from "rxjs/operators";
+import {TopData} from "../model/top-data.model";
 
 export interface Hashtag {
   name: string;
@@ -28,6 +29,8 @@ export class AnalyticsDashboardDataService {
   private curedData = new BehaviorSubject<GenericChartData>(null);
   // @ts-ignore
   private tweetsCount = new BehaviorSubject<GenericChartData>(null);
+  // @ts-ignore
+  private topData = new BehaviorSubject<Array<TopData>>(null);
   private dataFirstLoaded = false;
   private loadingData = new Subject<void>();
   private hashtags: Array<Hashtag> = [];
@@ -51,6 +54,10 @@ export class AnalyticsDashboardDataService {
 
   public getHashtags(): Array<Hashtag> {
     return this.hashtags;
+  }
+
+  public getTopData(): Observable<Array<TopData>> {
+    return this.topData.pipe(filter(x => x !== null));
   }
 
   public getDataByName(dataName: string): BehaviorSubject<GenericChartData> {
@@ -96,6 +103,8 @@ export class AnalyticsDashboardDataService {
       .subscribe(data => { this.vaccinatedData.next(data) })
     this.restService.getDataInRange('/api/data/cured', this.startDate, this.endDate)
       .subscribe(data => { this.curedData.next(data) })
+    this.restService.getTopDataInRange(this.startDate, this.endDate, this.getUsedHashtags())
+      .subscribe(data => { this.topData.next(data); })
   }
 
   private setDefaultDataRange(): void {
