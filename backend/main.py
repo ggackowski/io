@@ -180,6 +180,6 @@ def get_top_tags():
     })
 
 hashtags = []
-with open('./twint_criteria.json') as file:
+with open('scripts/twint_criteria.json') as file:
     twint_criteria = json.load(file)
     hashtags = [criteria['hashtag'] for criteria in twint_criteria if 'hashtag' in criteria]

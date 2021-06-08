@@ -14,7 +14,7 @@ db = client.io
 def apply_twint_criteria(config, criteria):
     config.Lang = "pl"
     config.Store_json = True
-    config.Output = "tweets.json"
+    # config.Output = "tweets.json"
 
     if criteria:
         config.Search = ""
