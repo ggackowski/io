@@ -139,8 +139,8 @@ def get_top_users():
             "replies": {"$sum": "$replies_count"},
             "retweets": {"$sum": "$retweets_count"},
         }},
-        {"$sort"   : {"count" : -1}},
-        {"$limit": 20}
+        {"$sort"  : {"count" : -1}},
+        { "$limit": 100 }
     ]
 
     df = pd.DataFrame(db.tweets.aggregate(query))
@@ -179,7 +179,5 @@ def get_top_tags():
         'value': list(df['count'])
     })
 
-hashtags = []
-with open('scripts/twint_criteria.json') as file:
-    twint_criteria = json.load(file)
-    hashtags = [criteria['hashtag'] for criteria in twint_criteria if 'hashtag' in criteria]
+twint_criteria = pd.DataFrame(db.tweetsCriteriaStatus.find({},{'criteria':1}))['criteria']
+hashtags = [criteria['hashtag'] for criteria in twint_criteria if 'hashtag' in criteria]
