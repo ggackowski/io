@@ -13,6 +13,7 @@ import {AnalyticsDashboardDataService} from "../../services/analytics-dashboard-
 export class TopDataComponent implements OnInit {
   rows: any = [];
   temp: any = [];
+  allraws: any = [];
   loadingIndicator = true;
   reorderable = true;
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -29,6 +30,8 @@ export class TopDataComponent implements OnInit {
       console.log('ok', data);
       this.loadingIndicator = false;
       this.rows = data;
+      this.temp = this.rows;
+      this.allraws = data;
     });
     // setTimeout(() => {
     //
@@ -82,10 +85,10 @@ export class TopDataComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
-    const temp = this.rows.filter(function (d: any) {
+    const temp = this.temp.filter(function (d: any) {
       return d.Username.toLowerCase().indexOf(val) !== -1 || !val;
     });
-
+    if (val === '') this.rows = this.allraws;
     // update the rows
     this.rows = temp;
     // Whenever the filter changes, always go back to the first page
