@@ -82,7 +82,7 @@ export class TopDataComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
-    const temp = this.temp.filter(function (d: any) {
+    const temp = this.rows.filter(function (d: any) {
       return d.Username.toLowerCase().indexOf(val) !== -1 || !val;
     });
 

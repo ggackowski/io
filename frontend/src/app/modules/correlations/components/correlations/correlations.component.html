@@ -33,7 +33,7 @@
           <tr *ngFor="let col of correlation.correlation_matrix;let i = index">
             <td>{{correlation.index_mapping[i]}}</td>
             <td *ngFor="let element of col; let j = index">
-              <div *ngIf="element">
+              <div *ngIf="element" [style]="element.correlation > 0.66 ? 'color: red' : element.correlation < 0.33 ? 'color: black' : 'color: orange' ">
                 {{element.correlation.toFixed(5)}}
                 <br>
                 {{element.pValue}}
